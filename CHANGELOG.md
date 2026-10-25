@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-10-25
+
+### Added
+- Initial inventory data structure (`db.json`) for packaging and industrial supplies.
+- `mock-api` script in `package.json` to run a local backend mock using `json-server`.
+
 ## [1.2.0] - 2026-10-25
 
 ### Added
