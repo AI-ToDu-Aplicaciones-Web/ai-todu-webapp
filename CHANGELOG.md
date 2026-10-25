@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-10-25
+
+### Added
+- Centralized HTTP client configuration (`http-client.js`) using Axios.
+- Base connection setup for local Fake API integration on port 3000.
+
 ## [1.3.0] - 2026-10-25
 
 ### Added
