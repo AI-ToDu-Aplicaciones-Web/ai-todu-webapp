@@ -2,125 +2,128 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [0.0.1] - 2026-10-06
+## [1.2.0] - 2026-10-25
 
 ### Added
-- Estructura base del proyecto Landing Page utilizando Vue y Vite.
-- Configuración inicial de variables de entorno y exclusiones de entorno local en `.gitignore`.
-- Implementación de la barra de navegación y el `Hero Section` aplicando el patrón de lectura en forma de Z.
-- Integración de estilos globales y variables CSS básicas.
+- Integrated the pure HTML landing page structure (`index.html`), global UI styles (`style.css`), and frontend internationalization logic (`main.js`) for the AI-ToDu platform.
+- Full readiness for the 1.2.0 release deployment.
+
+## [1.1.1] - 2026-10-08
+
+### Added
+- Complete integration of the product catalog and shopping cart in the SPA.
+- Persistent top navigation bar through a global layout (`MainLayout`).
+- Mocked connection of infrastructure services for the sales and store contexts.
+
+## [1.1.0] - 2026-10-08
+
+### Added
+- Shopping cart creation and integration with the Azure MockApi.
+
+## [1.0.1] - 2026-10-08
+
+### Added
+- Bounded Context structure for `sales` and `store` following DDD.
+
+### Fixed
+- Alignment and color contrast fixes in `LandingView`, `SignInView`, and `SignUpView`.
+
+## [1.0.0] - 2026-10-07
+
+### Added
+- Stable production release (`v1.0.0`) of the **Al ToDu** platform.
+- Complete integration of the authentication module (IAM) connected to the local server with persistence in `db.json`.
+- Dynamic language selector with support for `en_US` and `es_419`.
+- Architecture based strictly on Clean Architecture and Domain-Driven Design (DDD).
+
+## [0.7.0] - 2026-10-07
+
+### Added
+- Integration of JSON translation dictionaries (`en.json` and `es.json`) centralizing static content.
+- `LanguageSwitcher` component implemented with `<pv-select-button>` to switch languages globally.
+
+## [0.6.0] - 2026-10-07
+
+### Added
+- Integration of `vue-router` for navigation between the Landing Page and the IAM Bounded Context (Login/Register).
+- `vue-i18n` configuration supporting `en_US` and `es_419` languages, meeting internationalization criteria.
+
+## [0.5.2] - 2026-10-07
+
+### Fixed
+- Migrated HTML mockup from `index.html` to the main component `src/LandingView.vue` to fix the rendering overwrite error (blank screen) caused by the framework mounting.
+
+## [0.5.1] - 2026-10-07
+
+### Fixed
+- Character encoding correction in `index.html` by adding `<meta charset="utf-8">`.
+- Fixed UI rendering by globally importing PrimeVue, PrimeFlex, and PrimeIcons in `main.js`.
+
+## [0.5.0] - 2026-10-07
+
+### Added
+- Bounded Context `task-management`: Core Domain functionality for application task management.
+- `Task` Entity and `TaskId` Value Object for in-memory data integrity.
+- `task-api.js` connected to the global interceptor and `task.assembler.js` to map HTTP resources to domain entities.
+- `taskStore.js` to orchestrate reactivity and task state mutations.
+- Presentation components `TaskForm.vue` for creation and `TaskList.vue` based on DataTable for task visualization and updating.
+
+## [0.4.0] - 2026-10-07
+
+### Added
+- Bounded Context `shared`: Shared Kernel implementation for cross-cutting code across the application.
+- `DateTime` Value Object and static validators in `StringValidator` within the domain layer.
+- Centralized Axios configuration in `http-common.js` with an `errorInterceptor` to normalize failed responses in the infrastructure layer.
+
+## [0.3.0] - 2026-10-07
+
+### Added
+- Bounded Context `profiles`: User profile management integration.
+- `Profile` Entity and `ProfileId` Value Object.
+- Infrastructure layer with `profile-api.js` and `profile.assembler.js` for data persistence and instantiation.
+- `profileStore.js` to handle the profile state in the application.
+- Visual components `ProfileCard.vue` and `ProfileForm.vue` built with PrimeVue.
+
+## [0.2.0] - 2026-10-07
+
+### Added
+- Bounded Context `iam`: Identity and Access Management implementation.
+- `User` Domain Entity and `UserId` Value Object.
+- Infrastructure layer with `iam-api.js` and `user.assembler.js` for backend communication.
+- Application store (`iam_store.js`) for reactive authentication state management.
+- Vue presentation components (`LoginForm.vue`, `RegisterForm.vue`) and views (`SignInView.vue`, `SignUpView.vue`).
+
+## [0.1.0] - 2026-10-07
+
+### Added
+- Benefits section highlighting main features.
+- Subscription Plans (Pricing) section with 3 tiers: Basic, Pro, and Teams.
+- Public Landing Page consolidation for Al ToDu.
+
+## [0.0.5] - 2026-10-07
+
+### Added
+- General SPA architecture in Angular applying Domain-Driven Design (DDD) principles.
+- Bounded Contexts creation: `iam`, `warehouse-management`, `reporting`, `security-alerts`, `sensor-integration`, `subscription-management`, and `company-registration`.
+- `server/` directory with `db.json` and `routes.json` configuration to provide a mocked backend using `json-server`.
+- Entity schemas, DTOs, and Assemblers configuration to isolate the UI layer from network infrastructure.
+- Internationalization files for English and Spanish in `public/i18n/`.
+- GitHub Actions workflows (`azure-static-web-apps.yml`) set up for CI/CD deployment.
+- Implementation of the "Benefits" section on the Landing Page to communicate product value using PrimeVue components.
 
 ## [Unreleased]
 
 ### Added
 - **Bounded Context `ai-assistance`**:
-    - Implementación del modelo de dominio: Entidad `AiPromptSession` y Value Object `SuggestedTask` con inmutabilidad estricta.
-    - Implementación del `AiAssistantAssembler` para transformar datos crudos en entidades del dominio.
-    - Creación del *Application Service* simulado `aiAssistantStore` para la orquestación de la IA.
-    - Componente de presentación `AiTaskGenerator.vue` para interactuar con la generación de tareas (US00X).
+  - Domain model implementation: `AiPromptSession` Entity and `SuggestedTask` Value Object with strict immutability.
+  - `AiAssistantAssembler` implementation to transform raw data into domain entities.
+  - Simulated Application Service `aiAssistantStore` creation for AI orchestration.
+  - `AiTaskGenerator.vue` presentation component to interact with task generation (US00X).
 
-## [0.0.5] - 2026-10-07
-
-### Added
-- Arquitectura general de la SPA en Angular aplicando los principios de Domain-Driven Design (DDD).
-- Creación de Bounded Contexts: `iam`, `warehouse-management`, `reporting`, `security-alerts`, `sensor-integration`, `subscription-management` y `company-registration`.
-- Directorio de `server/` con la configuración de `db.json` y `routes.json` para proveer un backend simulado mediante `json-server`.
-- Configuración de los esquemas de entidades, DTOs y *Assemblers* para aislar la capa de UI de la infraestructura de red.
-- Archivos de internacionalización para inglés y español en `public/i18n/`.
-- Flujos de trabajo de GitHub Actions (`azure-static-web-apps.yml`) preparados para el despliegue de IC/DC.
-- Implementación de la sección "Beneficios" en el Landing Page para comunicar el valor del producto usando componentes de PrimeVue.
-
-
-## [0.1.0] - 2026-10-07
+## [0.0.1] - 2026-10-06
 
 ### Added
-- Sección de Beneficios resaltando las características principales.
-- Sección de Planes de Suscripción (Pricing) con 3 niveles: Básico, Pro y Equipos.
-- Consolidación del Landing Page público de Al ToDu.
-
-## [0.2.0] - 2026-10-07
-
-### Added
-- Bounded Context `iam`: Implementación de la gestión de identidad y accesos.
-- Entidad de dominio `User` y Value Object `UserId`.
-- Capa de infraestructura con `iam-api.js` y `user.assembler.js` para comunicación con el backend.
-- Store de aplicación (`iam_store.js`) para el manejo reactivo del estado de autenticación.
-- Componentes de presentación de Vue (`LoginForm.vue`, `RegisterForm.vue`) y vistas (`SignInView.vue`, `SignUpView.vue`).
-
-## [0.3.0] - 2026-10-07
-
-### Added
-- Bounded Context `profiles`: Integración de la gestión de perfiles de usuario.
-- Entidad `Profile` y Value Object `ProfileId`.
-- Capa de infraestructura con `profile-api.js` y `profile.assembler.js` para persistencia e instanciación de datos.
-- `profileStore.js` para manejar el estado del perfil en la aplicación.
-- Componentes visuales `ProfileCard.vue` y `ProfileForm.vue` construidos con PrimeVue.
-
-## [0.4.0] - 2026-10-07
-
-### Added
-- Bounded Context `shared`: Implementación del núcleo compartido (Shared Kernel) para código transversal a toda la aplicación.
-- Objetos de valor `DateTime` y validadores estáticos en `StringValidator` dentro de la capa de dominio.
-- Configuración centralizada de Axios en `http-common.js` con un `errorInterceptor` para normalizar respuestas fallidas en la capa de infraestructura.
-
-## [0.5.0] - 2026-10-07
-
-### Added
-- Bounded Context `task-management`: Funcionalidad principal (Core Domain) para la gestión de tareas de la aplicación.
-- Entidad `Task` y Value Object `TaskId` para la integridad de los datos en memoria.
-- `task-api.js` conectado al interceptor global y `task.assembler.js` para mapear los recursos HTTP a entidades de dominio.
-- `taskStore.js` para orquestar la reactividad y las mutaciones de estado de las tareas.
-- Componentes de presentación `TaskForm.vue` para la creación y `TaskList.vue` basado en DataTable para la visualización y actualización de tareas.
-
-## [0.5.1] - 2026-10-07
-
-### Fixed
-- Corrección de codificación de caracteres en `index.html` agregando `<meta charset="utf-8">`.
-- Solución de renderizado de la interfaz mediante la importación global de PrimeVue, PrimeFlex y PrimeIcons en `main.js`.
-
-## [0.5.2] - 2026-10-07
-
-### Fixed
-- Migración del maquetado HTML desde `index.html` hacia el componente principal `src/LandingView.vue` para solucionar el error de sobrescritura de renderizado (pantalla en blanco) provocado por el montaje del framework.
-
-## [0.6.0] - 2026-10-07
-
-### Added
-- Integración de `vue-router` para la navegación entre el Landing Page y el Bounded Context de IAM (Login/Registro).
-- Configuración de `vue-i18n` soportando los idiomas `en_US` y `es_419` cumpliendo con los criterios de internacionalización.
-
-## [0.7.0] - 2026-10-07
-
-### Added
-- Integración de diccionarios JSON de traducción (`en.json` y `es.json`) centralizando el contenido estático.
-- Componente `LanguageSwitcher` implementado con `<pv-select-button>` para cambiar el idioma globalmente.
-
-## [1.0.0] - 2026-10-07
-
-### Added
-- Versión de producción estable (`v1.0.0`) de la plataforma **Al ToDu**.
-- Integración completa del módulo de autenticación (IAM) conectado al servidor local con persistencia en `db.json`.
-- Selector dinámico de idiomas con soporte para `en_US` y `es_419`.
-- Arquitectura basada estrictamente en Clean Architecture y Domain-Driven Design (DDD).
-
-## [1.0.1] - 2026-10-08
-
-### Added
-- Estructura de contextos delimitados para `sales` y `store` siguiendo DDD.
-
-### Fixed
-- Alineación y contraste de colores en `LandingView`, `SignInView` y `SignUpView`.
-
-## [1.1.0] - 2026-10-08
-
-- Creacion del carrito y integracion con el MockApi en Azure
-- 
-## [1.1.1] - 2026-10-08
-
-### Added
-- Integración completa del catálogo de productos y carrito de compras en la SPA.
-- Barra de navegación superior persistente mediante un layout global (`MainLayout`).
-- Conexión simulada de servicios de infraestructura para el contexto de ventas y tienda.
+- Base structure for the Landing Page project using Vue and Vite.
+- Initial environment variables setup and local environment exclusions in `.gitignore`.
+- Navigation bar and `Hero Section` implementation applying the Z-pattern layout.
+- Integration of global styles and basic CSS variables.
