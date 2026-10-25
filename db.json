@@ -1,5 +1,16 @@
 {
-  "users": [],
-  "profiles": [],
-  "tasks": []
+  "items": [
+    {
+      "id": "ITEM-001",
+      "name": "Caja de Empaque P",
+      "quantity": 150,
+      "status": "available"
+    },
+    {
+      "id": "ITEM-002",
+      "name": "Cinta Adhesiva Industrial",
+      "quantity": 20,
+      "status": "low_stock"
+    }
+  ]
 }
