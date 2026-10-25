@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "json-server": "json-server --watch db.json --port 3000"
+    "mock-api": "json-server --watch db.json --port 3000"
   },
   "dependencies": {
     "@primeuix/themes": "^3.0.1",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "json-server": "^1.0.0-beta.15",
     "vite": "^8.3.0"
   }
 }
