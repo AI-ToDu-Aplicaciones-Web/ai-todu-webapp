@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2026-10-28
+
+### Added
+- Core Domain `Warehouse` implementation for inventory management.
+- `InventoryItem` aggregate root entity with business rules and stock management (US02, US11).
+- `InventoryItemAssembler` for bidirectional DDD mapping between API resources and entities.
+- `WarehouseApi` gateway extending `BaseApi`.
+- Pinia store (`warehouse.store.js`) for reactive inventory state, quarantine toggles, and total valuation.
+
 ## [1.6.0] - 2026-10-28
 
 ### Added
