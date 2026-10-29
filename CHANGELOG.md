@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - 2026-10-28
+
+### Added
+- `IAM` module implementation for identity and access management (US06, US07).
+- `iam.store.js` with session persistence using `localStorage` and role-based owner validation.
+- `Logistics` core domain for dispatch and delivery tracking.
+- `logistics.store.js` to manage shipment manifests, simulated IoT telemetry (US31, US36), and delivery confirmations (US35).
+
 ## [1.8.0] - 2026-10-28
 
 ### Added
