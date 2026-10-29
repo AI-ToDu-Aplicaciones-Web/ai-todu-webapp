@@ -1,11 +1,11 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
-import LanguageSwitcher from './shared/presentation/components/LanguageSwitcher.vue'; // Ajusta la ruta a tu componente
+import LanguageSwitcher from './shared/presentation/components/LanguageSwitcher.vue';
 
 const { t } = useI18n();
 
 const goToApp = (route) => {
-  // Redirige a la URL real de tu Web App desplegada
+
   window.location.href = `https://tu-url-de-la-webapp.com/${route}`;
 };
 </script>
@@ -32,7 +32,6 @@ const goToApp = (route) => {
       </div>
     </header>
 
-    <!-- 1. HERO SECTION (Pitch Message + CTA Principal) -->
     <section id="hero" class="grid grid-nogutter align-items-center px-4 pt-8 pb-6 mt-6 bg-blue-50" aria-labelledby="hero-title">
       <div class="col-12 md:col-6 text-center md:text-left p-4">
         <h1 id="hero-title" class="text-5xl md:text-6xl font-extrabold text-gray-900 mb-3">
@@ -46,12 +45,10 @@ const goToApp = (route) => {
         </button>
       </div>
       <div class="col-12 md:col-6 flex justify-content-center p-4">
-        <!-- Requisito: Screenshot de la Web App -->
         <img src="/assets/app-mockup.png" alt="AI-ToDu Dashboard Preview" class="w-full max-w-30rem border-round-xl shadow-4" />
       </div>
     </section>
 
-    <!-- 2. PROPÓSITO DE LA PLATAFORMA -->
     <section id="purpose" class="py-8 px-4 max-w-7xl mx-auto" aria-labelledby="purpose-title">
       <div class="text-center mb-6">
         <h2 id="purpose-title" class="text-3xl font-bold text-gray-900 mb-2">{{ t('purpose.title') }}</h2>
@@ -75,7 +72,6 @@ const goToApp = (route) => {
       </div>
     </section>
 
-    <!-- 3. SEGMENTOS OBJETIVO CON CTAs -->
     <section id="segments" class="py-8 px-4 bg-gray-900 text-white text-center">
       <h2 class="text-3xl font-bold mb-6">{{ t('segments.title') }}</h2>
       <div class="grid max-w-7xl mx-auto">
@@ -98,20 +94,17 @@ const goToApp = (route) => {
       </div>
     </section>
 
-    <!-- 4. ACERCA DEL EQUIPO Y PRODUCTO (VIDEOS) -->
     <section id="team" class="py-8 px-4 max-w-7xl mx-auto text-center">
       <h2 class="text-3xl font-bold mb-5">Conoce más sobre AI-ToDu</h2>
       <div class="grid">
         <div class="col-12 md:col-6 p-3">
           <h3 class="mb-3">About the Product</h3>
-          <!-- Reemplazar con el iframe de Microsoft Stream / Youtube -->
           <div class="bg-gray-200 border-round-xl flex align-items-center justify-content-center" style="height: 300px;">
             <p class="text-gray-500">[ Video Placeholder: Producto ]</p>
           </div>
         </div>
         <div class="col-12 md:col-6 p-3">
           <h3 class="mb-3">About the Team (IA-INNOVATION)</h3>
-          <!-- Reemplazar con el iframe de Microsoft Stream / Youtube -->
           <div class="bg-gray-200 border-round-xl flex align-items-center justify-content-center" style="height: 300px;">
             <p class="text-gray-500">[ Video Placeholder: Equipo ]</p>
           </div>
@@ -119,25 +112,20 @@ const goToApp = (route) => {
       </div>
     </section>
 
-    <!-- 5. PRECIOS (US01) -->
     <section id="pricing" class="py-8 px-4 bg-gray-50">
       <div class="text-center mb-6">
         <h2 class="text-3xl font-bold">{{ t('pricing.title') }}</h2>
       </div>
-      <!-- Aquí puedes mantener tu grid de precios actual de los planes -->
       <p class="text-center text-gray-500">[ Planes: Básico | Pro | Equipos ]</p>
     </section>
 
-    <!-- 6. FOOTER CON SOCIAL MEDIA, CONTACTO Y ÉTICA -->
     <footer class="bg-gray-900 text-white py-6" role="contentinfo">
       <div class="max-w-7xl mx-auto px-4 grid">
-        <!-- Contacto -->
         <div class="col-12 md:col-4 mb-4 md:mb-0">
           <h3 class="text-xl font-bold mb-3">AI-ToDu</h3>
           <p class="text-gray-400 mb-2"><i class="pi pi-envelope mr-2"></i> contacto@ia-innovation.com</p>
           <p class="text-gray-400"><i class="pi pi-phone mr-2"></i> +51 987 654 321</p>
         </div>
-        <!-- Social Media -->
         <div class="col-12 md:col-4 mb-4 md:mb-0 text-center">
           <h3 class="text-xl font-bold mb-3">Síguenos</h3>
           <div class="flex justify-content-center gap-4">
@@ -146,7 +134,6 @@ const goToApp = (route) => {
             <a href="https://twitter.com" target="_blank" aria-label="Twitter" class="text-gray-400 hover:text-white"><i class="pi pi-twitter text-2xl"></i></a>
           </div>
         </div>
-        <!-- Enlaces de Ética -->
         <div class="col-12 md:col-4 text-right">
           <h3 class="text-xl font-bold mb-3">Legal</h3>
           <a href="/terms" class="block text-gray-400 no-underline hover:text-white mb-2">Términos y Condiciones de Servicio</a>
