@@ -2,12 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] - 2026-10-28
+
+### Added
+- Shared Kernel implementation for cross-context utilities.
+- `Money` value object for monetary representation and IGV calculations.
+- Centralized Axios error handling with `errorInterceptor`.
+- `BaseApi` and `BaseEndpoint` gateway classes to standardize HTTP request routing.
+
 ## [1.5.0] - 2026-10-28
 
 ### Added
 - Unified `AI-ToDu` server using `json-server` for Azure WebApp deployment.
 - Health check endpoint (`/api/v1/health`) documented for Chapter V.
 - RESTful rewrite rules and SPA fallback for Vue Router production routing.
+
 ## [1.4.0] - 2026-10-25
 
 ### Added
