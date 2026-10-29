@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-10-28
+
+### Added
+- Unified Presentation Layer (`App.vue`) acting as the global responsive application shell.
+- Global i18n support (English/Spanish) togglable via the top app bar.
+- `IAM` authentication view handling MYPE user registration and login (US06, US07).
+- Real-Time Executive Dashboard view with KPIs for inventory valuation, sales revenue, and stock alerts (US42, US43).
+- `Warehouse & Stock` workspace for inventory management and quarantine control (US02, US11, US12, US13, US16).
+- `Sales & POS Billing` workspace for commercial transactions and automated stock deduction sync (US03, US26, US27, US30).
+- `Logistics & Dispatch` workspace for shipment manifest creation and IoT telemetry tracking (US31, US34, US35, US36).
+
 ## [1.9.0] - 2026-10-28
 
 ### Added
