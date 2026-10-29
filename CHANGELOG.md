@@ -8,8 +8,6 @@ All notable changes to this project will be documented in this file.
 - Unified `AI-ToDu` server using `json-server` for Azure WebApp deployment.
 - Health check endpoint (`/api/v1/health`) documented for Chapter V.
 - RESTful rewrite rules and SPA fallback for Vue Router production routing.
-
-
 ## [1.4.0] - 2026-10-25
 
 ### Added
