@@ -17,6 +17,7 @@ const middlewares = jsonServer.defaults({
 app.use(middlewares);
 app.use(jsonServer.bodyParser);
 
+// Health Check Endpoint (Documentado en Capítulo V del Informe)
 app.get('/api/v1/health', (_req, res) => {
     res.json({
         status: 'UP',
@@ -25,6 +26,7 @@ app.get('/api/v1/health', (_req, res) => {
     });
 });
 
+// Reglas de reescritura RESTful para /api/v1/*
 app.use(jsonServer.rewriter({
     '/api/v1/authentication/sign-up': '/users',
     '/api/v1/*': '/$1'
@@ -32,6 +34,7 @@ app.use(jsonServer.rewriter({
 
 app.use(router);
 
+// Fallback para rutas de Vue Router (SPA) en producción (Azure)
 app.get('*', (req, res) => {
     if (!req.path.startsWith('/api') && fs.existsSync(path.join(distPath, 'index.html'))) {
         res.sendFile(path.join(distPath, 'index.html'));

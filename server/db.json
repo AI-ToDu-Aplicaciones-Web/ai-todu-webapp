@@ -1,16 +1,87 @@
 {
-  "items": [
+  "users": [
     {
-      "id": "ITEM-001",
-      "name": "Caja de Empaque P",
-      "quantity": 150,
-      "status": "available"
+      "id": "usr-001",
+      "fullName": "Carlos Mendoza",
+      "email": "carlos@restaurantesmendoza.pe",
+      "password": "admin123",
+      "role": "BUSINESS_OWNER",
+      "organization": "Mendoza Gastronomy S.A.C.",
+      "plan": "Growth Business"
     },
     {
-      "id": "ITEM-002",
-      "name": "Cinta Adhesiva Industrial",
-      "quantity": 20,
-      "status": "low_stock"
+      "id": "usr-002",
+      "fullName": "Miguel Rojas",
+      "email": "miguel@restaurantesmendoza.pe",
+      "password": "operario123",
+      "role": "WAREHOUSE_OPERATOR",
+      "organization": "Mendoza Gastronomy S.A.C.",
+      "plan": "Growth Business"
+    }
+  ],
+  "inventory-items": [
+    {
+      "id": "inv-101",
+      "sku": "SKU-TEX-001",
+      "name": "Cotton Fabric Roll Red 50m",
+      "category": "Textiles",
+      "location": "Aisle A - Shelf 02",
+      "lotCode": "LOT-2026-09",
+      "quantity": 85,
+      "minStock": 20,
+      "unitPrice": 140.00,
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "inv-102",
+      "sku": "SKU-GAS-204",
+      "name": "Extra Virgin Olive Oil 5L",
+      "category": "Gastronomy",
+      "location": "Aisle B - Shelf 01",
+      "lotCode": "LOT-2026-10",
+      "quantity": 6,
+      "minStock": 15,
+      "unitPrice": 95.50,
+      "status": "LOW_STOCK"
+    },
+    {
+      "id": "inv-103",
+      "sku": "SKU-DIS-309",
+      "name": "Perishable Dairy Box 24un",
+      "category": "Distribution",
+      "location": "Cold Room C-04",
+      "lotCode": "LOT-2026-08",
+      "quantity": 12,
+      "minStock": 10,
+      "unitPrice": 68.00,
+      "status": "QUARANTINE"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "trx-501",
+      "customerName": "Confecciones Gamarra E.I.R.L.",
+      "sku": "SKU-TEX-001",
+      "itemName": "Cotton Fabric Roll Red 50m",
+      "quantity": 5,
+      "unitPrice": 140.00,
+      "subtotal": 700.00,
+      "igv": 126.00,
+      "total": 826.00,
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-25T15:30:00Z"
+    }
+  ],
+  "manifests": [
+    {
+      "id": "man-901",
+      "code": "MAN-2026-001",
+      "route": "Lima Centro -> La Victoria (Gamarra)",
+      "driver": "Jorge Quispe",
+      "sku": "SKU-TEX-001",
+      "quantity": 5,
+      "telemetryTemp": "19.5 °C",
+      "status": "IN_TRANSIT"
     }
   ]
 }
