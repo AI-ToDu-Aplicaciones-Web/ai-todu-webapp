@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-10-28
+
+### Added
+- Unified `AI-ToDu` server using `json-server` for Azure WebApp deployment.
+- Health check endpoint (`/api/v1/health`) documented for Chapter V.
+- RESTful rewrite rules and SPA fallback for Vue Router production routing.
+
+
 ## [1.4.0] - 2026-10-25
 
 ### Added
@@ -13,7 +21,7 @@ All notable changes to this project will be documented in this file.
 ## [1.3.0] - 2026-10-25
 
 ### Added
-- Initial inventory data structure (`db.json`) for packaging and industrial supplies.
+- Initial inventory data structure (`server/db.json`) for packaging and industrial supplies.
 - `mock-api` script in `package.json` to run a local backend mock using `json-server`.
 
 ## [1.2.0] - 2026-10-25
@@ -46,7 +54,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Stable production release (`v1.0.0`) of the **Al ToDu** platform.
-- Complete integration of the authentication module (IAM) connected to the local server with persistence in `db.json`.
+- Complete integration of the authentication module (IAM) connected to the local server with persistence in `server/db.json`.
 - Dynamic language selector with support for `en_US` and `es_419`.
 - Architecture based strictly on Clean Architecture and Domain-Driven Design (DDD).
 
@@ -119,7 +127,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - General SPA architecture in Angular applying Domain-Driven Design (DDD) principles.
 - Bounded Contexts creation: `iam`, `warehouse-management`, `reporting`, `security-alerts`, `sensor-integration`, `subscription-management`, and `company-registration`.
-- `server/` directory with `db.json` and `routes.json` configuration to provide a mocked backend using `json-server`.
+- `server/` directory with `server/db.json` and `routes.json` configuration to provide a mocked backend using `json-server`.
 - Entity schemas, DTOs, and Assemblers configuration to isolate the UI layer from network infrastructure.
 - Internationalization files for English and Spanish in `public/i18n/`.
 - GitHub Actions workflows (`azure-static-web-apps.yml`) set up for CI/CD deployment.
