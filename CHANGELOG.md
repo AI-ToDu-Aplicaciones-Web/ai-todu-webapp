@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0] - 2026-10-28
+
+### Added
+- `Sales & Billing` core domain implementation (US03, US30).
+- `CommercialTransaction` entity with automated tax (IGV) and total calculations.
+- Pinia store (`sales.store.js`) to manage transaction state and revenue calculation.
+- Domain policy integration: Automatic validation of item status (Quarantine/StockOut) and automatic stock deduction from the `Warehouse` store upon sale creation.
+
 ## [1.7.0] - 2026-10-28
 
 ### Added
