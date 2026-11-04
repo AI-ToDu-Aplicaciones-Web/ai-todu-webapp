@@ -528,6 +528,24 @@ a {
   border-radius: 8px;
 }
 
+.video-container.video-pending {
+  height: auto;
+  min-height: 180px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.video-pending p {
+  margin: 0;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
 .video-container iframe {
   position: absolute;
   top: 0;
@@ -733,5 +751,35 @@ a {
 
   .hero-content h1 {
     font-size: 2rem;
+  }
+}
+
+/* Accessible keyboard navigation */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 300;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  background: var(--primary-navy);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+:where(a, button, input, select):focus-visible {
+  outline: 3px solid var(--accent-teal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

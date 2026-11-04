@@ -1,5 +1,3 @@
-const WEB_APP_BASE_URL = 'https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#';
-
 const i18nDictionary = {
     en_US: {
         'nav.purpose': 'Platform',
@@ -7,13 +5,14 @@ const i18nDictionary = {
         'nav.pricing': 'Pricing',
         'nav.videos': 'Videos',
         'nav.contact': 'Contact',
-        'nav.login': 'Log In',
-        'nav.trial': 'Start Free Trial',
+        'nav.login': 'Request Access',
+        'nav.skip': 'Skip to main content',
+        'nav.trial': 'Request a Demo',
         'hero.badge': 'B2B SaaS Logistics & ERP',
         'hero.title': 'The Central Nervous System for your MSE Supply Chain',
         'hero.pitch': 'Stop losing money to unaccounted shrinkage, stockouts, and disconnected spreadsheets. AI-ToDu unifies your warehouse inventory, commercial transactions, and dispatch manifests in one intuitive cloud platform.',
         'hero.ctaPrimary': 'Explore Subscription Plans',
-        'hero.ctaSecondary': 'Try Web App Free',
+        'hero.ctaSecondary': 'Request a Demo',
         'hero.metric1': 'Weekly inventory check time',
         'hero.metric2': 'Stock traceability by SKU & Lot',
         'hero.metric3': 'To record inbound/outbound stock',
@@ -67,10 +66,13 @@ const i18nDictionary = {
         'pricing.p3F2': '✔ Real-time GPS & Cold-Chain IoT Telemetry',
         'pricing.p3F3': '✔ AI Demand Forecasting & Anomaly Detection',
         'pricing.viewDetails': 'View Included Features',
-        'pricing.selectPlan': 'Select Plan & Register',
+        'pricing.selectPlan': 'Ask About This Plan',
+        'pricing.askAboutPlan': 'Ask About This Plan',
         'videos.title': 'Discover Our Product & Engineering Team',
         'videos.subtitle': 'Watch how AI-ToDu transforms daily operations and meet the IA-INNOVATION team behind the architecture.',
         'videos.productTitle': 'About the Product',
+        'videos.productPending': 'Product video is not published yet.',
+        'videos.teamPending': 'Team video is not published yet.',
         'videos.productDesc': 'Promotional tour of AI-ToDu features, user flows, and validation testimonials.',
         'videos.teamTitle': 'About the Team (IA-INNOVATION)',
         'videos.teamDesc': 'Our collaborative software engineering process, ABET Student Outcome 5 reflections, and team members.',
@@ -99,13 +101,14 @@ const i18nDictionary = {
         'nav.pricing': 'Planes',
         'nav.videos': 'Videos',
         'nav.contact': 'Contacto',
-        'nav.login': 'Iniciar Sesión',
-        'nav.trial': 'Prueba Gratis',
+        'nav.login': 'Solicitar acceso',
+        'nav.skip': 'Saltar al contenido principal',
+        'nav.trial': 'Solicitar demo',
         'hero.badge': 'SaaS B2B de Logística y ERP',
         'hero.title': 'El Sistema Nervioso Central para la Cadena de Suministro de tu MYPE',
         'hero.pitch': 'Deja de perder dinero por mermas no registradas, quiebres de stock y hojas de Excel desconectadas. AI-ToDu unifica tu almacén, transacciones comerciales y manifiestos de despacho en una plataforma intuitiva.',
         'hero.ctaPrimary': 'Ver Planes de Suscripción',
-        'hero.ctaSecondary': 'Probar Web App Gratis',
+        'hero.ctaSecondary': 'Solicitar demostración',
         'hero.metric1': 'Tiempo semanal de cuadre de inventario',
         'hero.metric2': 'Trazabilidad por SKU y Lote',
         'hero.metric3': 'Para registrar entradas y salidas',
@@ -159,10 +162,13 @@ const i18nDictionary = {
         'pricing.p3F2': '✔ Telemetría GPS y Cadena de Frío IoT en tiempo real',
         'pricing.p3F3': '✔ Predicción de Demanda y Detección de Anomalías con IA',
         'pricing.viewDetails': 'Ver Funcionalidades Incluidas',
-        'pricing.selectPlan': 'Seleccionar Plan y Registrarse',
+        'pricing.selectPlan': 'Consultar este plan',
+        'pricing.askAboutPlan': 'Consultar este plan',
         'videos.title': 'Conoce Nuestro Producto y Equipo de Ingeniería',
         'videos.subtitle': 'Mira cómo AI-ToDu transforma las operaciones diarias y conoce al equipo IA-INNOVATION.',
         'videos.productTitle': 'Video About-the-Product',
+        'videos.productPending': 'El video del producto todavía no está publicado.',
+        'videos.teamPending': 'El video del equipo todavía no está publicado.',
         'videos.productDesc': 'Recorrido promocional por las funcionalidades de AI-ToDu y testimonios de validación.',
         'videos.teamTitle': 'Video About-the-Team (IA-INNOVATION)',
         'videos.teamDesc': 'Nuestro proceso colaborativo de ingeniería de software, logro del ABET Outcome 5 e integrantes.',
@@ -247,18 +253,33 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-en').addEventListener('click', () => setLanguage('en_US'));
     document.getElementById('btn-es').addEventListener('click', () => setLanguage('es_419'));
 
-    document.querySelectorAll('.cta-link').forEach((link) => {
-        const route = link.getAttribute('data-route');
-        if (route) {
-            link.href = `${WEB_APP_BASE_URL}/${route}`;
-        }
+    const selectedPlanInput = document.getElementById('selectedPlan');
+    const selectedPlanNote = document.getElementById('selected-plan-note');
+    const selectPlan = (planKey) => {
+        const plan = planSpecifications[planKey]?.[currentLang];
+        if (!plan) return;
+        selectedPlanInput.value = planKey;
+        selectedPlanNote.textContent = currentLang === 'en_US'
+            ? `Selected plan: ${plan.title}`
+            : `Plan seleccionado: ${plan.title}`;
+        selectedPlanNote.hidden = false;
+    };
+    document.querySelectorAll('.cta-link[data-plan]').forEach((link) => {
+        link.addEventListener('click', () => selectPlan(link.dataset.plan));
     });
 
     const mobileToggle = document.getElementById('mobile-toggle');
     const navMenu = document.getElementById('nav-menu');
+    const closeMenu = () => {
+        navMenu.classList.remove('open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+    };
     mobileToggle.addEventListener('click', () => {
         const isOpen = navMenu.classList.toggle('open');
         mobileToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    navMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeMenu);
     });
 
     const planModal = document.getElementById('plan-modal');
@@ -266,40 +287,103 @@ document.addEventListener('DOMContentLoaded', () => {
     const planModalBody = document.getElementById('plan-modal-body');
     const planModalCta = document.getElementById('plan-modal-cta');
 
+    let activeDialog = null;
+    let previousFocus = null;
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const openDialog = (dialog) => {
+        previousFocus = document.activeElement;
+        dialog.hidden = false;
+        activeDialog = dialog;
+        dialog.querySelector(focusableSelector)?.focus();
+    };
+    const closeDialog = (dialog) => {
+        dialog.hidden = true;
+        activeDialog = null;
+        previousFocus?.focus();
+    };
+    document.addEventListener('keydown', (event) => {
+        if (!activeDialog) {
+            if (event.key === 'Escape' && navMenu.classList.contains('open')) {
+                closeMenu();
+                mobileToggle.focus();
+            }
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeDialog(activeDialog);
+            return;
+        }
+        if (event.key !== 'Tab') return;
+
+        const controls = Array.from(activeDialog.querySelectorAll(focusableSelector));
+        if (!controls.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
     document.querySelectorAll('.plan-detail-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
             const planKey = btn.getAttribute('data-plan');
             const spec = planSpecifications[planKey][currentLang];
             planModalTitle.textContent = spec.title;
-            planModalBody.innerHTML = `<p>${spec.details}</p>`;
-            planModalCta.href = `${WEB_APP_BASE_URL}/register?plan=${planKey}`;
-            planModal.hidden = false;
+            const details = document.createElement('p');
+            details.textContent = spec.details;
+            planModalBody.replaceChildren(details);
+            planModalCta.href = '#contact';
+            planModalCta.dataset.plan = planKey;
+            openDialog(planModal);
         });
     });
 
     document.getElementById('close-plan-modal').addEventListener('click', () => {
-        planModal.hidden = true;
+        closeDialog(planModal);
+    });
+    planModalCta.addEventListener('click', () => {
+        selectPlan(planModalCta.dataset.plan);
+        closeDialog(planModal);
     });
 
     const termsModal = document.getElementById('terms-modal');
     document.getElementById('open-terms-btn').addEventListener('click', () => {
-        termsModal.hidden = false;
+        openDialog(termsModal);
     });
     document.getElementById('close-terms-modal').addEventListener('click', () => {
-        termsModal.hidden = true;
+        closeDialog(termsModal);
     });
     document.getElementById('accept-terms-btn').addEventListener('click', () => {
-        termsModal.hidden = true;
+        closeDialog(termsModal);
+    });
+    [planModal, termsModal].forEach((dialog) => {
+        dialog.addEventListener('click', (event) => {
+            if (event.target === dialog) closeDialog(dialog);
+        });
     });
 
     const contactForm = document.getElementById('contact-form');
     const feedback = document.getElementById('contact-feedback');
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (!contactForm.reportValidity()) return;
+
+        const company = document.getElementById('companyName').value.trim();
+        const email = document.getElementById('workEmail').value.trim();
+        const role = document.getElementById('segmentRole').value;
+        const subject = `AI-ToDu demo request - ${company}`;
+        const body = `Company: ${company}\nEmail: ${email}\nRole: ${role}\nPlan: ${selectedPlanInput.value || 'Not selected'}\n\nPlease contact me to schedule a demo.`;
+
         feedback.hidden = false;
         feedback.textContent = currentLang === 'en_US'
-            ? '✔ Thank you! Our B2B team will contact you shortly.'
-            : '✔ ¡Gracias! Nuestro equipo B2B se comunicará contigo pronto.';
-        contactForm.reset();
+            ? 'Your email application will open. Send the draft to complete your request.'
+            : 'Se abrirá tu aplicación de correo. Envía el borrador para completar tu solicitud.';
+        window.location.href = `mailto:contacto@ia-innovation.pe?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
 });
