@@ -260,9 +260,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mobileToggle = document.getElementById('mobile-toggle');
     const navMenu = document.getElementById('nav-menu');
+    const closeMenu = () => {
+        navMenu.classList.remove('open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+    };
     mobileToggle.addEventListener('click', () => {
         const isOpen = navMenu.classList.toggle('open');
         mobileToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    navMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeMenu);
     });
 
     const planModal = document.getElementById('plan-modal');
@@ -270,30 +277,80 @@ document.addEventListener('DOMContentLoaded', () => {
     const planModalBody = document.getElementById('plan-modal-body');
     const planModalCta = document.getElementById('plan-modal-cta');
 
+    let activeDialog = null;
+    let previousFocus = null;
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const openDialog = (dialog) => {
+        previousFocus = document.activeElement;
+        dialog.hidden = false;
+        activeDialog = dialog;
+        dialog.querySelector(focusableSelector)?.focus();
+    };
+    const closeDialog = (dialog) => {
+        dialog.hidden = true;
+        activeDialog = null;
+        previousFocus?.focus();
+    };
+    document.addEventListener('keydown', (event) => {
+        if (!activeDialog) {
+            if (event.key === 'Escape' && navMenu.classList.contains('open')) {
+                closeMenu();
+                mobileToggle.focus();
+            }
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeDialog(activeDialog);
+            return;
+        }
+        if (event.key !== 'Tab') return;
+
+        const controls = Array.from(activeDialog.querySelectorAll(focusableSelector));
+        if (!controls.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
     document.querySelectorAll('.plan-detail-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
             const planKey = btn.getAttribute('data-plan');
             const spec = planSpecifications[planKey][currentLang];
             planModalTitle.textContent = spec.title;
-            planModalBody.innerHTML = `<p>${spec.details}</p>`;
+            const details = document.createElement('p');
+            details.textContent = spec.details;
+            planModalBody.replaceChildren(details);
             planModalCta.href = `${WEB_APP_BASE_URL}/register?plan=${planKey}`;
-            planModal.hidden = false;
+            openDialog(planModal);
         });
     });
 
     document.getElementById('close-plan-modal').addEventListener('click', () => {
-        planModal.hidden = true;
+        closeDialog(planModal);
     });
 
     const termsModal = document.getElementById('terms-modal');
     document.getElementById('open-terms-btn').addEventListener('click', () => {
-        termsModal.hidden = false;
+        openDialog(termsModal);
     });
     document.getElementById('close-terms-modal').addEventListener('click', () => {
-        termsModal.hidden = true;
+        closeDialog(termsModal);
     });
     document.getElementById('accept-terms-btn').addEventListener('click', () => {
-        termsModal.hidden = true;
+        closeDialog(termsModal);
+    });
+    [planModal, termsModal].forEach((dialog) => {
+        dialog.addEventListener('click', (event) => {
+            if (event.target === dialog) closeDialog(dialog);
+        });
     });
 
     const contactForm = document.getElementById('contact-form');
