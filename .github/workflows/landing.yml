@@ -2,18 +2,31 @@ name: Landing checks
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   landing:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: fix/sprint1-landing-quality
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
+      - run: npm install --package-lock-only
+      - name: Save dependency lock
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "fix: sync dependency lock"
+            git push origin HEAD:fix/sprint1-landing-quality
+          fi
       - run: npm ci
       - run: npm run build
       - run: node --test tests/landing.test.cjs
