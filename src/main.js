@@ -1,5 +1,3 @@
-const WEB_APP_BASE_URL = 'https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#';
-
 const i18nDictionary = {
     en_US: {
         'nav.purpose': 'Platform',
@@ -7,13 +5,13 @@ const i18nDictionary = {
         'nav.pricing': 'Pricing',
         'nav.videos': 'Videos',
         'nav.contact': 'Contact',
-        'nav.login': 'Log In',
-        'nav.trial': 'Start Free Trial',
+        'nav.login': 'Request Access',
+        'nav.trial': 'Request a Demo',
         'hero.badge': 'B2B SaaS Logistics & ERP',
         'hero.title': 'The Central Nervous System for your MSE Supply Chain',
         'hero.pitch': 'Stop losing money to unaccounted shrinkage, stockouts, and disconnected spreadsheets. AI-ToDu unifies your warehouse inventory, commercial transactions, and dispatch manifests in one intuitive cloud platform.',
         'hero.ctaPrimary': 'Explore Subscription Plans',
-        'hero.ctaSecondary': 'Try Web App Free',
+        'hero.ctaSecondary': 'Request a Demo',
         'hero.metric1': 'Weekly inventory check time',
         'hero.metric2': 'Stock traceability by SKU & Lot',
         'hero.metric3': 'To record inbound/outbound stock',
@@ -67,7 +65,8 @@ const i18nDictionary = {
         'pricing.p3F2': '✔ Real-time GPS & Cold-Chain IoT Telemetry',
         'pricing.p3F3': '✔ AI Demand Forecasting & Anomaly Detection',
         'pricing.viewDetails': 'View Included Features',
-        'pricing.selectPlan': 'Select Plan & Register',
+        'pricing.selectPlan': 'Ask About This Plan',
+        'pricing.askAboutPlan': 'Ask About This Plan',
         'videos.title': 'Discover Our Product & Engineering Team',
         'videos.subtitle': 'Watch how AI-ToDu transforms daily operations and meet the IA-INNOVATION team behind the architecture.',
         'videos.productTitle': 'About the Product',
@@ -101,13 +100,13 @@ const i18nDictionary = {
         'nav.pricing': 'Planes',
         'nav.videos': 'Videos',
         'nav.contact': 'Contacto',
-        'nav.login': 'Iniciar Sesión',
-        'nav.trial': 'Prueba Gratis',
+        'nav.login': 'Solicitar acceso',
+        'nav.trial': 'Solicitar demo',
         'hero.badge': 'SaaS B2B de Logística y ERP',
         'hero.title': 'El Sistema Nervioso Central para la Cadena de Suministro de tu MYPE',
         'hero.pitch': 'Deja de perder dinero por mermas no registradas, quiebres de stock y hojas de Excel desconectadas. AI-ToDu unifica tu almacén, transacciones comerciales y manifiestos de despacho en una plataforma intuitiva.',
         'hero.ctaPrimary': 'Ver Planes de Suscripción',
-        'hero.ctaSecondary': 'Probar Web App Gratis',
+        'hero.ctaSecondary': 'Solicitar demostración',
         'hero.metric1': 'Tiempo semanal de cuadre de inventario',
         'hero.metric2': 'Trazabilidad por SKU y Lote',
         'hero.metric3': 'Para registrar entradas y salidas',
@@ -161,7 +160,8 @@ const i18nDictionary = {
         'pricing.p3F2': '✔ Telemetría GPS y Cadena de Frío IoT en tiempo real',
         'pricing.p3F3': '✔ Predicción de Demanda y Detección de Anomalías con IA',
         'pricing.viewDetails': 'Ver Funcionalidades Incluidas',
-        'pricing.selectPlan': 'Seleccionar Plan y Registrarse',
+        'pricing.selectPlan': 'Consultar este plan',
+        'pricing.askAboutPlan': 'Consultar este plan',
         'videos.title': 'Conoce Nuestro Producto y Equipo de Ingeniería',
         'videos.subtitle': 'Mira cómo AI-ToDu transforma las operaciones diarias y conoce al equipo IA-INNOVATION.',
         'videos.productTitle': 'Video About-the-Product',
@@ -251,11 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-en').addEventListener('click', () => setLanguage('en_US'));
     document.getElementById('btn-es').addEventListener('click', () => setLanguage('es_419'));
 
-    document.querySelectorAll('.cta-link').forEach((link) => {
-        const route = link.getAttribute('data-route');
-        if (route) {
-            link.href = `${WEB_APP_BASE_URL}/${route}`;
-        }
+    const selectedPlanInput = document.getElementById('selectedPlan');
+    const selectedPlanNote = document.getElementById('selected-plan-note');
+    const selectPlan = (planKey) => {
+        const plan = planSpecifications[planKey]?.[currentLang];
+        if (!plan) return;
+        selectedPlanInput.value = planKey;
+        selectedPlanNote.textContent = currentLang === 'en_US'
+            ? `Selected plan: ${plan.title}`
+            : `Plan seleccionado: ${plan.title}`;
+        selectedPlanNote.hidden = false;
+    };
+    document.querySelectorAll('.cta-link[data-plan]').forEach((link) => {
+        link.addEventListener('click', () => selectPlan(link.dataset.plan));
     });
 
     const mobileToggle = document.getElementById('mobile-toggle');
@@ -328,12 +336,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const details = document.createElement('p');
             details.textContent = spec.details;
             planModalBody.replaceChildren(details);
-            planModalCta.href = `${WEB_APP_BASE_URL}/register?plan=${planKey}`;
+            planModalCta.href = '#contact';
+            planModalCta.dataset.plan = planKey;
             openDialog(planModal);
         });
     });
 
     document.getElementById('close-plan-modal').addEventListener('click', () => {
+        closeDialog(planModal);
+    });
+    planModalCta.addEventListener('click', () => {
+        selectPlan(planModalCta.dataset.plan);
         closeDialog(planModal);
     });
 
@@ -363,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('workEmail').value.trim();
         const role = document.getElementById('segmentRole').value;
         const subject = `AI-ToDu demo request - ${company}`;
-        const body = `Company: ${company}\nEmail: ${email}\nRole: ${role}\n\nPlease contact me to schedule a demo.`;
+        const body = `Company: ${company}\nEmail: ${email}\nRole: ${role}\nPlan: ${selectedPlanInput.value || 'Not selected'}\n\nPlease contact me to schedule a demo.`;
 
         feedback.hidden = false;
         feedback.textContent = currentLang === 'en_US'
