@@ -528,6 +528,24 @@ a {
   border-radius: 8px;
 }
 
+.video-container.video-pending {
+  height: auto;
+  min-height: 180px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.video-pending p {
+  margin: 0;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
 .video-container iframe {
   position: absolute;
   top: 0;
