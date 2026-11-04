@@ -37,8 +37,8 @@
                 <button type="button" id="btn-es" class="lang-btn" aria-pressed="false">ES</button>
             </div>
 
-            <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/login" class="btn btn-outline btn-sm cta-link" data-route="login" data-i18n="nav.login">Log In</a>
-            <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/register" class="btn btn-primary btn-sm cta-link" data-route="register" data-i18n="nav.trial">Start Free Trial</a>
+            <a href="#contact" class="btn btn-outline btn-sm cta-link" data-i18n="nav.login">Log In</a>
+            <a href="#contact" class="btn btn-primary btn-sm cta-link" data-i18n="nav.trial">Start Free Trial</a>
         </div>
 
         <button type="button" class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
@@ -60,7 +60,7 @@
                 </p>
                 <div class="hero-ctas">
                     <a href="#pricing" class="btn btn-primary btn-lg" data-i18n="hero.ctaPrimary">Explore Subscription Plans</a>
-                    <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/register" class="btn btn-outline btn-lg cta-link" data-route="register" data-i18n="hero.ctaSecondary">Try Web App Free</a>
+                    <a href="#contact" class="btn btn-outline btn-lg cta-link" data-i18n="hero.ctaSecondary">Try Web App Free</a>
                 </div>
                 <div class="hero-metrics" aria-label="Key impact metrics">
                     <div class="metric">
@@ -188,7 +188,7 @@
                         <li data-i18n="segments.s1Item2">✔ Role-based access control & action auditing (US05, US10)</li>
                         <li data-i18n="segments.s1Item3">✔ Shrinkage & inventory variance reports (US41)</li>
                     </ul>
-                    <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/dashboard" class="btn btn-primary cta-link" data-route="dashboard" data-i18n="segments.s1Cta">Go to Executive Dashboard →</a>
+                    <a href="#contact" class="btn btn-primary cta-link" data-i18n="segments.s1Cta">Go to Executive Dashboard →</a>
                 </div>
 
                 <div class="segment-card operator-segment">
@@ -202,7 +202,7 @@
                         <li data-i18n="segments.s2Item2">✔ Shelf location finder & Quarantine control (US13, US16)</li>
                         <li data-i18n="segments.s2Item3">✔ Guided Shipment Manifest & dispatch confirmation (US31, US34)</li>
                     </ul>
-                    <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/inventory" class="btn btn-primary cta-link" data-route="inventory" data-i18n="segments.s2Cta">Go to Warehouse Inventory →</a>
+                    <a href="#contact" class="btn btn-primary cta-link" data-i18n="segments.s2Cta">Go to Warehouse Inventory →</a>
                 </div>
             </div>
         </div>
@@ -227,7 +227,7 @@
                     </ul>
                     <div class="plan-actions">
                         <button type="button" class="btn btn-outline w-full plan-detail-btn" data-plan="starter" data-i18n="pricing.viewDetails">View Included Features</button>
-                        <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/register?plan=starter" class="btn btn-primary w-full cta-link" data-route="register?plan=starter" data-i18n="pricing.selectPlan">Select Starter Plan</a>
+                        <a href="#contact" class="btn btn-primary w-full cta-link" data-plan="starter" data-i18n="pricing.selectPlan">Select Starter Plan</a>
                     </div>
                 </div>
 
@@ -243,7 +243,7 @@
                     </ul>
                     <div class="plan-actions">
                         <button type="button" class="btn btn-outline w-full plan-detail-btn" data-plan="growth" data-i18n="pricing.viewDetails">View Included Features</button>
-                        <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/register?plan=growth" class="btn btn-primary w-full cta-link" data-route="register?plan=growth" data-i18n="pricing.selectPlan">Select Growth Plan</a>
+                        <a href="#contact" class="btn btn-primary w-full cta-link" data-plan="growth" data-i18n="pricing.selectPlan">Select Growth Plan</a>
                     </div>
                 </div>
 
@@ -258,7 +258,7 @@
                     </ul>
                     <div class="plan-actions">
                         <button type="button" class="btn btn-outline w-full plan-detail-btn" data-plan="enterprise" data-i18n="pricing.viewDetails">View Included Features</button>
-                        <a href="https://ai-todu-aplicaciones-web.github.io/ai-todu-website/#/register?plan=enterprise" class="btn btn-primary w-full cta-link" data-route="register?plan=enterprise" data-i18n="pricing.selectPlan">Select Enterprise Plan</a>
+                        <a href="#contact" class="btn btn-primary w-full cta-link" data-plan="enterprise" data-i18n="pricing.selectPlan">Select Enterprise Plan</a>
                     </div>
                 </div>
             </div>
@@ -305,6 +305,8 @@
             </div>
 
             <form id="contact-form" class="contact-form" aria-label="Contact Form">
+                <input type="hidden" id="selectedPlan" name="selectedPlan" value="">
+                <p id="selected-plan-note" role="status" hidden></p>
                 <div class="form-group">
                     <label for="companyName" data-i18n="contact.labelCompany">Company / MSE Name</label>
                     <input type="text" id="companyName" required placeholder="e.g., Textil Gamarra S.A.C.">
@@ -374,7 +376,7 @@
         </div>
         <div class="modal-body" id="plan-modal-body"></div>
         <div class="modal-footer">
-            <a href="#" id="plan-modal-cta" class="btn btn-primary">Continue to Registration</a>
+            <a href="#contact" id="plan-modal-cta" class="btn btn-primary" data-i18n="pricing.askAboutPlan">Ask About This Plan</a>
         </div>
     </div>
 </div>
