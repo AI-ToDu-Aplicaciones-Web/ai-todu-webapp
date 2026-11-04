@@ -296,10 +296,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedback = document.getElementById('contact-feedback');
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (!contactForm.reportValidity()) return;
+
+        const company = document.getElementById('companyName').value.trim();
+        const email = document.getElementById('workEmail').value.trim();
+        const role = document.getElementById('segmentRole').value;
+        const subject = `AI-ToDu demo request - ${company}`;
+        const body = `Company: ${company}\nEmail: ${email}\nRole: ${role}\n\nPlease contact me to schedule a demo.`;
+
         feedback.hidden = false;
         feedback.textContent = currentLang === 'en_US'
-            ? '✔ Thank you! Our B2B team will contact you shortly.'
-            : '✔ ¡Gracias! Nuestro equipo B2B se comunicará contigo pronto.';
-        contactForm.reset();
+            ? 'Your email application will open. Send the draft to complete your request.'
+            : 'Se abrirá tu aplicación de correo. Envía el borrador para completar tu solicitud.';
+        window.location.href = `mailto:contacto@ia-innovation.pe?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
 });
