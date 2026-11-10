@@ -37,7 +37,9 @@ The UI reads model snapshots and sends intentions to the API. It does not direct
 
 ## Identity handoff
 
-The API's `/warehouse/session` returns inventory permissions. The client attaches a JWT from the `aitodu_token` storage key and never sends an organization/actor as request authority. IAM must supply a valid JWT with the agreed claims. Local demonstration identity is configured only on the backend; the UI displays its status. Production is not authenticated merely by setting a local-storage user object.
+Register through `inventory.html#/sign-up`, then sign in through `#/sign-in`. The implemented IAM API issues the JWT stored only in `sessionStorage` under `aitodu_token`. Restoring a session requires `/authentication/me`; a local user object cannot grant access. The API's `/warehouse/session` returns inventory permissions. The client never sends an organization/actor as request authority. The old demonstration identity is no longer accepted.
+
+Owners can register organization users and enable/disable them through `#/users`. Operators manage inventory; sales clerks have a read-only inventory view. Sign-out clears the session and inventory snapshots. Expired or disabled sessions return to sign-in. Each new owner starts a separate organization, so older demonstration inventory does not appear under their new account.
 
 ## Production build
 
@@ -45,7 +47,7 @@ The API's `/warehouse/session` returns inventory permissions. The client attache
 npm run build
 ```
 
-Test scripts and their CI step have been removed at the user's request. The accepted frontend functional source is unchanged by the backend Shared correction. Product IDs now come from the backend as integers; the client consumes these identifiers without requiring a source change.
+Test scripts and their CI step have been removed at the user's request. Inventory operations are unchanged; the shell and routes now integrate IAM. Product IDs come from the backend as integers.
 
 ## Integration with the rest of the project
 
