@@ -1,98 +1,27 @@
-import { Money } from '../../../shared/domain/model/money.value-object.js';
+import { Sku } from './sku.value-object.js';
+import { StockLot } from './stock-lot.entity.js';
 
-/**
- * Aggregate Root: InventoryItem
- * Uses '_' prefix for internal fields to remain compatible with Vue 3 Proxy reactivity (ADR-0003).
- */
+/** Immutable client model. Server commands are the authority for stock changes. */
 export class InventoryItem {
-    _id;
-    _sku;
-    _name;
-    _category;
-    _location;
-    _lotCode;
-    _quantity;
-    _minStock;
-    _unitPrice;
-    _status;
-
-    constructor({
-                    id = '',
-                    sku = '',
-                    name = '',
-                    category = 'General',
-                    location = 'Unassigned',
-                    lotCode = 'LOT-DEFAULT',
-                    quantity = 0,
-                    minStock = 10,
-                    unitPrice = 0,
-                    status = 'AVAILABLE'
-                }) {
-        if (!sku || !sku.trim()) {
-            throw new Error('SKU is mandatory for an Inventory Item (US02).');
-        }
-        this._id = id || `inv-${Date.now()}`;
-        this._sku = sku.trim().toUpperCase();
-        this._name = name.trim();
-        this._category = category;
-        this._location = location;
-        this._lotCode = lotCode;
-        this._quantity = Math.max(0, Number(quantity));
-        this._minStock = Math.max(0, Number(minStock));
-        this._unitPrice = new Money(unitPrice).amount;
-        this._status = this.#evaluateDomainStatus(status);
-        Object.freeze(this);
-    }
-
-    #evaluateDomainStatus(currentStatus) {
-        if (currentStatus === 'QUARANTINE') return 'QUARANTINE';
-        if (this._quantity === 0) return 'STOCK_OUT';
-        if (this._quantity <= this._minStock) return 'LOW_STOCK';
-        return 'AVAILABLE';
-    }
-
-    get id() { return this._id; }
-    get sku() { return this._sku; }
-    get name() { return this._name; }
-    get category() { return this._category; }
-    get location() { return this._location; }
-    get lotCode() { return this._lotCode; }
-    get quantity() { return this._quantity; }
-    get minStock() { return this._minStock; }
-    get unitPrice() { return this._unitPrice; }
-    get status() { return this._status; }
-
-    get canBeSold() {
-        return this._status !== 'QUARANTINE' && this._quantity > 0;
-    }
-
-    withUpdatedStock(deltaQuantity) {
-        const newQty = this._quantity + Number(deltaQuantity);
-        if (newQty < 0) throw new Error('Insufficient stock for operation (US11).');
-        return new InventoryItem({
-            ...this.toPrimitives(),
-            quantity: newQty,
-            status: this._status === 'QUARANTINE' ? 'QUARANTINE' : 'AVAILABLE'
-        });
-    }
-
-    withQuarantineToggled() {
-        const nextStatus = this._status === 'QUARANTINE' ? 'AVAILABLE' : 'QUARANTINE';
-        return new InventoryItem({ ...this.toPrimitives(), status: nextStatus });
-    }
-
-    toPrimitives() {
-        return {
-            id: this._id,
-            sku: this._sku,
-            name: this._name,
-            category: this._category,
-            location: this._location,
-            lotCode: this._lotCode,
-            quantity: this._quantity,
-            minStock: this._minStock,
-            unitPrice: this._unitPrice,
-            status: this._status
-        };
-    }
+  #id; #sku; #name; #category; #minimumStock; #unitPrice; #version;
+  #totalQuantity; #availableQuantity; #status; #lots; #movements; #counts; #returns;
+  constructor({id,sku,name,category,minimumStock=0,unitPrice=0,version=1,totalQuantity=0,availableQuantity=0,status='STOCK_OUT',lots=[],movements=[],counts=[],returns=[]}) {
+    if (!id || typeof name !== 'string' || !name.trim()) throw new Error('InvalidItem');
+    for (const value of [minimumStock,unitPrice,totalQuantity,availableQuantity]) if (!Number.isFinite(Number(value)) || Number(value) < 0) throw new Error('InvalidQuantity');
+    if (!Number.isSafeInteger(version) || version < 1) throw new Error('InvalidVersion');
+    this.#id=id; this.#sku=new Sku(sku); this.#name=name; this.#category=category;
+    this.#minimumStock=Number(minimumStock); this.#unitPrice=Number(unitPrice); this.#version=version;
+    this.#totalQuantity=Number(totalQuantity); this.#availableQuantity=Number(availableQuantity); this.#status=status;
+    this.#lots=Object.freeze(lots.map(lot => new StockLot(lot)));
+    const immutable = rows => Object.freeze(rows.map(row => Object.freeze({...row})));
+    this.#movements=immutable(movements); this.#counts=immutable(counts); this.#returns=immutable(returns);
+    Object.freeze(this);
+  }
+  get id(){return this.#id;} get sku(){return this.#sku.value;} get name(){return this.#name;}
+  get category(){return this.#category;} get minimumStock(){return this.#minimumStock;} get minStock(){return this.#minimumStock;}
+  get unitPrice(){return this.#unitPrice;} get version(){return this.#version;}
+  get totalQuantity(){return this.#totalQuantity;} get quantity(){return this.#availableQuantity;} get availableQuantity(){return this.#availableQuantity;}
+  get status(){return this.#status;} get lots(){return this.#lots;} get movements(){return this.#movements;}
+  get counts(){return this.#counts;} get returns(){return this.#returns;}
+  get canBeSold(){return this.#availableQuantity>0;} get location(){return this.#lots[0]?.location || '';}
 }

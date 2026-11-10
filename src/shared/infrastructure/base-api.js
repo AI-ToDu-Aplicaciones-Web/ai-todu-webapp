@@ -6,12 +6,12 @@ const baseURL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? '/a
 export class BaseApi {
     #http;
 
-    constructor() {
+    constructor({ apiBaseURL = baseURL, errorHandler = errorInterceptor } = {}) {
         this.#http = axios.create({
-            baseURL,
+            baseURL: apiBaseURL,
             headers: { 'Content-Type': 'application/json' }
         });
-        this.#http.interceptors.response.use(response => response, errorInterceptor);
+        this.#http.interceptors.response.use(response => response, errorHandler);
     }
 
     get http() {
