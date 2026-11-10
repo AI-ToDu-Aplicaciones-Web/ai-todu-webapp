@@ -1,43 +1,36 @@
 <script setup>
-import { ref } from 'vue';
-import { iamStore } from '../../application/iam_store.js';
+import {reactive,ref,onBeforeUnmount} from 'vue';
+import {useRouter} from 'vue-router';
+import {useI18n} from 'vue-i18n';
 import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
 import Button from 'primevue/button';
-
-const username = ref('');
-const password = ref('');
-const fullName = ref('');
-
-const submitForm = async () => {
-  if (username.value && password.value) {
-    // Ajusta esta llamada según el método de tu IAM store para registrarse
-    await iamStore.signUp(username.value, password.value, fullName.value);
+import {useIamStore} from '../../application/iam_store.js';
+const iam=useIamStore(),router=useRouter(),{t}=useI18n();
+const form=reactive({organizationName:'',fullName:'',email:'',password:''});
+const confirmation=ref(''),mismatch=ref(false);
+onBeforeUnmount(()=>{form.password='';confirmation.value='';});
+async function submit(){
+  mismatch.value=form.password!==confirmation.value;if(mismatch.value)return;
+  if(await iam.signUp({...form})){
+    form.password='';confirmation.value='';await router.replace({name:'sign-in',query:{registered:'1'}});
   }
-};
+}
 </script>
-
 <template>
-  <form @submit.prevent="submitForm" class="flex flex-column gap-4 p-fluid">
-    <div class="flex flex-column gap-2">
-      <label for="fullName" class="font-medium text-gray-300">Nombre Completo</label>
-      <InputText id="fullName" v-model="fullName" required class="w-full" placeholder="Ej. Carlos Bernal" />
-    </div>
-
-    <div class="flex flex-column gap-2">
-      <label for="username" class="font-medium text-gray-300">Usuario / Correo</label>
-      <InputText id="username" v-model="username" required class="w-full" placeholder="usuario@upc.edu.pe" />
-    </div>
-
-    <div class="flex flex-column gap-2">
-      <label for="password" class="font-medium text-gray-300">Contraseña</label>
-      <Password id="password" v-model="password" :feedback="false" required toggleMask class="w-full" inputClass="w-full" />
-    </div>
-
-    <Button type="submit" label="Registrarse" class="w-full font-bold justify-content-center mt-3" />
-
-    <div v-if="iamStore.errors.length" class="text-red-400 text-sm mt-2 text-center">
-      {{ iamStore.errors[0] }}
-    </div>
+  <form class="iam-form" @submit.prevent="submit">
+    <label for="sign-up-organization">{{t('iam.organization')}}</label>
+    <InputText id="sign-up-organization" v-model="form.organizationName" autocomplete="organization" required maxlength="160"/>
+    <label for="sign-up-name">{{t('iam.fullName')}}</label>
+    <InputText id="sign-up-name" v-model="form.fullName" autocomplete="name" required maxlength="160"/>
+    <label for="sign-up-email">{{t('iam.email')}}</label>
+    <InputText id="sign-up-email" v-model="form.email" type="email" autocomplete="username" required maxlength="254"/>
+    <label for="sign-up-password">{{t('iam.password')}}</label>
+    <InputText id="sign-up-password" v-model="form.password" type="password" autocomplete="new-password" required minlength="12" maxlength="72" aria-describedby="password-hint"/>
+    <small id="password-hint">{{t('iam.passwordHint')}}</small>
+    <label for="sign-up-confirm">{{t('iam.confirmPassword')}}</label>
+    <InputText id="sign-up-confirm" v-model="confirmation" type="password" autocomplete="new-password" required minlength="12" maxlength="72"/>
+    <p v-if="mismatch" class="warehouse-error" role="alert">{{t('iam.passwordMismatch')}}</p>
+    <p v-if="iam.error" class="warehouse-error" role="alert">{{t(`iam.errors.${iam.error.code}`)}}</p>
+    <Button type="submit" :label="t('iam.createAccount')" :loading="iam.busy"/>
   </form>
 </template>
