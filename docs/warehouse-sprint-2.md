@@ -39,20 +39,13 @@ The UI reads model snapshots and sends intentions to the API. It does not direct
 
 The API's `/warehouse/session` returns inventory permissions. The client attaches a JWT from the `aitodu_token` storage key and never sends an organization/actor as request authority. IAM must supply a valid JWT with the agreed claims. Local demonstration identity is configured only on the backend; the UI displays its status. Production is not authenticated merely by setting a local-storage user object.
 
-## Tests
+## Production build
 
 ```text
-npm test
 npm run build
 ```
 
-The six existing landing checks and six warehouse model/assembler checks run under `npm test`. Browser verification requires Playwright and Edge, plus the running local API, database and Vite server:
-
-```text
-node tests/e2e/warehouse.spec.cjs
-```
-
-The browser test creates a demonstration product, receives 20 units, issues 4, reloads, applies a count, classifies a return, checks quarantine rejection/release and location changes, switches to Spanish and checks the mobile layout. Screenshots go to ignored `artifacts/`.
+Test scripts and their CI step have been removed at the user's request. The accepted frontend functional source is unchanged by the backend Shared correction. Product IDs now come from the backend as integers; the client consumes these identifiers without requiring a source change.
 
 ## Integration with the rest of the project
 
