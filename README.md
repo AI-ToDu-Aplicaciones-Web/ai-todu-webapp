@@ -1,5 +1,34 @@
-# Vue 3 + Vite
+# AI-ToDu Web Application
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Vue 3, JavaScript and PrimeVue frontend connected to the C# AI-ToDu Platform. The existing landing and application are separate entries in the same Vite build.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Run locally
+
+Start PostgreSQL and the backend on port 5080 using the backend README. Then:
+
+```powershell
+npm ci
+npm run dev -- --host 127.0.0.1 --port 5173 --strictPort
+```
+
+- Website: `http://127.0.0.1:5173/`
+- Create organization: `http://127.0.0.1:5173/inventory.html#/sign-up`
+- Sign in: `http://127.0.0.1:5173/inventory.html#/sign-in`
+- Inventory: `http://127.0.0.1:5173/inventory.html#/inventory`
+- Organization users (owner only): `http://127.0.0.1:5173/inventory.html#/users`
+
+Create your organization and owner account, then sign in. Passwords require at least 12 characters and at most 72 UTF-8 bytes. Owners can register warehouse operators and sales clerks in their own organization. Operators manage inventory; sales clerks can consult it. Accounts can be enabled/disabled by their owner. Disabled accounts cannot sign in or use existing tokens.
+
+The application validates sessions against the server, stores the access token in session storage and clears account-specific inventory state on sign-out. Refreshing the page restores a valid session. Credentials are sent only in POST bodies; they are not queried through the old mock `/users` service or stored as browser user objects.
+
+English is the default; use **ES** for Spanish. Each newly registered organization has its own inventory. Records entered using the former development identity remain in the old demonstration organization.
+
+## Build and hosting
+
+```powershell
+npm run build
+```
+
+Both `index.html` and `inventory.html` are built. In development, Vite proxies `/warehouse-api` to `http://127.0.0.1:5080/api/v1`. For a separate production API set `VITE_WAREHOUSE_API_URL=https://YOUR_API_HOST/api/v1` before building and configure that frontend origin in the API's CORS settings.
+
+IAM follows `src/iam/{domain/model,application,infrastructure,presentation}`. Inventory details and integration boundaries are documented in [Warehouse Sprint 2](docs/warehouse-sprint-2.md). Sales, subscription enforcement, password recovery and cloud deployment remain separate backlog work. There are no test scripts in this delivery.
