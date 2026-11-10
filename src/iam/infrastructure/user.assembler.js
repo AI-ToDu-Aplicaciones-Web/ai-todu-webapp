@@ -1,16 +1,6 @@
-import { User } from '../model/user.entity.js';
+import {User} from '../domain/model/user.entity.js';
 
 export class UserAssembler {
-    static toEntityFromResource(resource) {
-        try {
-            return new User({
-                id: resource.id,
-                username: resource.username,
-                token: resource.token
-            });
-        } catch (error) {
-            console.error('Error al ensamblar User:', error.message);
-            return null;
-        }
-    }
+  static toEntityFromResource(resource){return new User(resource);}
+  static toEntitiesFromResponse(response){return response.data.map(resource=>this.toEntityFromResource(resource));}
 }
