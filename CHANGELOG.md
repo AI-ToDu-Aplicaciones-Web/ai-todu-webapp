@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.1] - 2026-11-11
+
+- Removed the frontend test suite and its CI and release steps.
+
 ## [2.1.0] - 2026-11-11
 
 - Reconciled main, develop and the verified IAM/inventory frontend with both Vite entry points.
