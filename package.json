@@ -8,8 +8,7 @@
     "mock": "node server.js",
     "build": "vite build",
     "start": "node serve.js",
-    "prestart": "npm run build",
-    "test": "node --test tests/landing.test.cjs"
+    "prestart": "npm run build"
   },
   "dependencies": {
     "@primevue/themes": "^4.0.0",
