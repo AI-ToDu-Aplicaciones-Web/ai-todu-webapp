@@ -1,19 +1,12 @@
-export class SalesApiService {
-    /**
-     * Simula el envío de la orden de compra hacia el servidor.
-     * @param {Object} payload - Estructura de datos de la orden procesada.
-     */
-    async createPurchaseOrder(payload) {
-        console.log("Enviando orden a la API simulada:", payload);
+import { PlatformApi } from '../../shared/infrastructure/platform-api.js';
 
-        // Simulamos una latencia de red de 500ms y un registro exitoso
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({
-                    status: 201,
-                    data: { success: true, message: "Orden procesada con éxito", order: payload }
-                });
-            }, 500);
-        });
-    }
+export class SalesApi extends PlatformApi {
+  customers(search) { return this.http.get('/customers', { params: { search } }); }
+  addCustomer(name) { return this.http.post('/customers', { name }); }
+  history(params) { return this.http.get('/transactions',{params}); }
+  checkout(resource) { return this.http.post('/transactions', resource); }
+  cancel(id) { return this.http.post(`/transactions/${id}/cancel`); }
+  pay(id,reference) { return this.http.post(`/transactions/${id}/payment`,{reference}); }
+  receipt(id) { return this.http.get(`/transactions/${id}/receipt`); }
+  recordReturn(id, resource) { return this.http.post(`/transactions/${id}/returns`, resource); }
 }

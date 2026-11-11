@@ -24,7 +24,7 @@ export const useWarehouseStore=defineStore('warehouse',()=>{
     catch(e){if(request===listRequest)rejected(e);}finally{if(request===listRequest)loading.value=false;}
   }
   async function fetchItem(id){const request=++detailRequest;loading.value=true;error.value=null;selected.value=null;
-    try{const response=await api.getItem(id);if(request===detailRequest)selected.value=Assembler.toEntityFromResource(response.data);}catch(e){if(request===detailRequest)rejected(e);}finally{if(request===detailRequest)loading.value=false;}
+    try{const response=await api.getItem(id);if(request===detailRequest){selected.value=Assembler.toEntityFromResource(response.data);return selected.value;}}catch(e){if(request===detailRequest)rejected(e);}finally{if(request===detailRequest)loading.value=false;}
   }
   async function registerItem(form){const account=accountVersion;saving.value=true;error.value=null;notice.value='';
     try{const result=Assembler.toEntityFromResource((await api.createItem(Assembler.toCreateResource(form))).data);if(account!==accountVersion)return null;selected.value=result;return result;}
