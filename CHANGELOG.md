@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2026-11-11
+
+- Add customer search, editable carts, payment recording, receipts, returns and dated sales history.
+- Connect organization plans, user access, audit history, stock/expiry alerts and adjustment reasons to the real API.
+
 ## [2.1.1] - 2026-11-11
 
 - Removed the frontend test suite and its CI and release steps.
