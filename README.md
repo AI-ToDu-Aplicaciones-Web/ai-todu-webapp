@@ -29,6 +29,8 @@ English is the default; use **ES** for Spanish. Each newly registered organizati
 npm run build
 ```
 
+`npm start` builds and serves static files. Configure a separate platform URL or route same-origin `/api/v1` requests to ASP.NET at the hosting edge. Use `npm run mock` only for legacy demonstrations.
+
 Both `index.html` and `inventory.html` are built. In development, Vite proxies `/warehouse-api` to `http://127.0.0.1:5080/api/v1`. For a separate production API set `VITE_WAREHOUSE_API_URL=https://YOUR_API_HOST/api/v1` before building and configure that frontend origin in the API's CORS settings.
 
-IAM follows `src/iam/{domain/model,application,infrastructure,presentation}`. Inventory details and integration boundaries are documented in [Warehouse Sprint 2](docs/warehouse-sprint-2.md). Sales, subscription enforcement, password recovery and cloud deployment remain separate backlog work. There are no test scripts in this delivery.
+IAM follows `src/iam/{domain/model,application,infrastructure,presentation}`. Inventory details and integration boundaries are documented in [Warehouse Sprint 2](docs/warehouse-sprint-2.md). Sales, subscription enforcement, password recovery and cloud deployment remain separate backlog work. Run `npm test` for the six landing checks. The authenticated Sales screen uses the platform transactions endpoint. While it is unavailable, the form stays closed. Stock changes on a sale must be coordinated by the C# service.

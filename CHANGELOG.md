@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-11-11
+
+- Reconciled main, develop and the verified IAM/inventory frontend with both Vite entry points.
+- Added authenticated sales navigation and removed browser-side stock deduction. Commercial operations depend on a platform transactions endpoint.
+- Separated static hosting from the development mock and restored six landing checks.
+
 ## [2.0.0] - 2026-10-28
 
 ### Added
