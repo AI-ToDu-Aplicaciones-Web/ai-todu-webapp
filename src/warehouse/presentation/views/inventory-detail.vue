@@ -1,4 +1,6 @@
 <script setup>
+import {useIamStore} from '../../../iam/application/iam_store.js';
+const iam=useIamStore();
 import {computed,reactive,ref,watch} from 'vue';
 import {useRoute} from 'vue-router';
 import {useI18n} from 'vue-i18n';
@@ -33,7 +35,7 @@ async function relocate(){if(await store.mutate('relocateLot',{location:state.lo
   <router-link to="/inventory">← {{t('back')}}</router-link>
   <p v-if="store.loading" role="status">{{t('loading')}}</p>
   <template v-else-if="item">
-    <div class="warehouse-title"><div><p class="warehouse-eyebrow">{{item.sku}} · {{item.category}}</p><h1>{{item.name}}</h1></div><Button :label="t('refresh')" severity="secondary" icon="pi pi-refresh" @click="store.fetchItem(item.id)"/></div>
+    <div class="warehouse-title"><div><p class="warehouse-eyebrow">{{item.sku}} · {{item.category}}</p><h1>{{item.name}}</h1><router-link v-if="item.canBeSold && ['BUSINESS_OWNER','SALES_CLERK'].includes(iam.currentUser?.role)" :to="{name:'sales',query:{item:item.id}}">{{t('sales.record')}}</router-link></div><Button :label="t('refresh')" severity="secondary" icon="pi pi-refresh" @click="store.fetchItem(item.id)"/></div>
     <section class="warehouse-metrics" :aria-label="t('stockOverview')"><div class="warehouse-card"><span>{{t('available')}}</span><strong data-testid="available-stock">{{item.availableQuantity}}</strong></div><div class="warehouse-card"><span>{{t('physical')}}</span><strong data-testid="physical-stock">{{item.totalQuantity}}</strong></div><div class="warehouse-card"><span>{{t('status')}}</span><strong class="warehouse-badge" :class="item.status.toLowerCase()">{{t(item.status)}}</strong></div></section>
     <section class="warehouse-card"><h2>{{t('lots')}}</h2><DataTable :value="item.lots" data-key="id" scrollable><template #empty>{{t('noLots')}}</template><Column field="code" :header="t('lotCode')"/><Column field="location" :header="t('location')"/><Column field="quantity" :header="t('quantity')"/><Column :header="t('expiresOn')"><template #body="{data}">{{date(data.expiresOn)}}</template></Column><Column :header="t('quarantined')"><template #body="{data}">{{t(data.isQuarantined?'yes':'no')}}</template></Column><Column :header="t('expired')"><template #body="{data}">{{t(data.isExpired?'yes':'no')}}</template></Column></DataTable></section>
     <p v-if="!store.canManage" role="status">{{t('readOnly')}}</p>

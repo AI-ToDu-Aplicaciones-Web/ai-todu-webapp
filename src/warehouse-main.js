@@ -15,10 +15,11 @@ import {iamRoutes,safeAuthRedirect} from './iam/presentation/iam-routes.js';
 import {useIamStore} from './iam/application/iam_store.js';
 
 const pinia=createPinia();
-const router=createRouter({history:createWebHashHistory(),routes:[...iamRoutes,...warehouseRoutes]});
+const router=createRouter({history:createWebHashHistory(),routes:[...iamRoutes,{path:'/sales',name:'sales',component:()=>import('./sales/presentation/views/sales-view.vue'),meta:{requiresAuth:true,salesOnly:true}},...warehouseRoutes]});
 router.beforeEach(async to=>{
   const iam=useIamStore(pinia);await iam.restore();
   if(to.meta.requiresAuth&&!iam.isAuthenticated)return {name:'sign-in',query:{redirect:to.fullPath}};
+  if(to.meta.salesOnly&&!['BUSINESS_OWNER','SALES_CLERK'].includes(iam.currentUser?.role))return {name:'warehouse-inventory'};
   if(to.meta.ownerOnly&&!iam.isOwner)return {name:'warehouse-inventory'};
   if(to.meta.guestOnly&&iam.isAuthenticated)return safeAuthRedirect(to.query.redirect);
 });

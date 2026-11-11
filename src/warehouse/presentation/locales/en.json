@@ -1,4 +1,18 @@
 {
+  "sales": {
+    "title": "Sales",
+    "loading": "Checking the sales service…",
+    "unavailable": "The sales service is unavailable.",
+    "sending": "Submitting sale…",
+    "saved": "Sale confirmed.",
+    "uncertain": "Confirmation unavailable. Check the history before submitting again.",
+    "customer": "Customer",
+    "quantity": "Quantity",
+    "confirm": "Confirm sale",
+    "history": "Sales history",
+    "empty": "No sales recorded.",
+    "record": "Record sale"
+  },
   "brand": "AI-ToDu",
   "inventory": "Inventory",
   "newItem": "Register product",

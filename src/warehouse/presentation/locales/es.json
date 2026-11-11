@@ -1,4 +1,18 @@
 {
+  "sales": {
+    "title": "Ventas",
+    "loading": "Consultando el servicio de ventas…",
+    "unavailable": "El servicio de ventas no está disponible.",
+    "sending": "Enviando la venta…",
+    "saved": "Venta confirmada.",
+    "uncertain": "No se recibió confirmación. Revisa el historial antes de volver a enviar.",
+    "customer": "Cliente",
+    "quantity": "Cantidad",
+    "confirm": "Confirmar venta",
+    "history": "Historial de ventas",
+    "empty": "No hay ventas registradas.",
+    "record": "Registrar venta"
+  },
   "brand": "AI-ToDu",
   "inventory": "Inventario",
   "newItem": "Registrar producto",
