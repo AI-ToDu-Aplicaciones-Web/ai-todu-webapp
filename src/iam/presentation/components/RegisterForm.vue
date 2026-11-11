@@ -1,18 +1,18 @@
 <script setup>
 import {reactive,ref,onBeforeUnmount} from 'vue';
-import {useRouter} from 'vue-router';
+import {useRoute,useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import {useIamStore} from '../../application/iam_store.js';
-const iam=useIamStore(),router=useRouter(),{t}=useI18n();
+const iam=useIamStore(),router=useRouter(),route=useRoute(),{t}=useI18n();
 const form=reactive({organizationName:'',fullName:'',email:'',password:''});
 const confirmation=ref(''),mismatch=ref(false);
 onBeforeUnmount(()=>{form.password='';confirmation.value='';});
 async function submit(){
   mismatch.value=form.password!==confirmation.value;if(mismatch.value)return;
   if(await iam.signUp({...form})){
-    form.password='';confirmation.value='';await router.replace({name:'sign-in',query:{registered:'1'}});
+    form.password='';confirmation.value='';await router.replace({name:'sign-in',query:{registered:'1',redirect:['starter','growth','enterprise'].includes(route.query.plan)?'/organization?plan='+route.query.plan:'/inventory'}});
   }
 }
 </script>

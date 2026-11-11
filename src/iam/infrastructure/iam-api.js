@@ -12,5 +12,6 @@ export class IamApi extends PlatformApi {
   me(){return this.http.get('/authentication/me');}
   getUsers(){return this.#users.getAll();}
   createUser(resource){return this.#users.create(resource);}
+  setAccess(id,resource){return this.http.patch(`/users/${id}/access`,resource);}
   setUserStatus(id,isActive){return this.http.patch(`/users/${id}/status`,{isActive});}
 }

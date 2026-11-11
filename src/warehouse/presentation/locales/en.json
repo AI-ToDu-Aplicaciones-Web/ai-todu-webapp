@@ -156,5 +156,33 @@
       "InvalidAccountData": "Review the required fields and password length.",
       "RequestFailed": "Could not connect. Check your connection and try again."
     }
+  },
+  "ops": {
+    "addCustomer": "Register customer",
+    "cart": "Cart",
+    "addItem": "Add product",
+    "remove": "Remove",
+    "payment": "Payment result",
+    "accepted": "Payment recorded",
+    "rejected": "Payment declined",
+    "receipt": "Receipt",
+    "pending": "Pending payment",
+    "collect": "Record payment",
+    "organization": "Organization",
+    "subscription": "Subscription",
+    "seats": "Users",
+    "notifications": "Notifications",
+    "noAlerts": "No active alerts.",
+    "LowStock": "Low stock",
+    "Expiry": "Lot expiry",
+    "markRead": "Mark as read",
+    "read": "Read",
+    "audit": "Recent activity",
+    "permissions": "Permissions",
+    "editInventory": "Manage inventory",
+    "from": "From",
+    "to": "Through",
+    "reasons": "Adjustment reasons",
+    "cancelled": "Cancelled"
   }
 }

@@ -9,7 +9,9 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 const iam=useIamStore(),{t}=useI18n();
 const form=reactive({fullName:'',email:'',password:'',role:'WAREHOUSE_OPERATOR'});
-const saved=ref(false);
+const saved=ref(false), editing=ref(null);
+function edit(user){editing.value={id:user.id,role:user.role,inventory:user.canManageStock,sales:user.canSell};}
+async function saveAccess(){const {id,...resource}=editing.value;if(await iam.setAccess(id,resource))editing.value=null;}
 const roles=computed(()=>['WAREHOUSE_OPERATOR','SALES_CLERK'].map(value=>({value,label:t(`iam.roles.${value}`)})));
 onMounted(()=>iam.loadUsers());onBeforeUnmount(()=>{form.password='';});
 async function create(){
@@ -36,7 +38,13 @@ async function create(){
       <Column field="fullName" :header="t('iam.fullName')"/><Column field="email" :header="t('iam.email')"/>
       <Column :header="t('iam.role')"><template #body="{data}">{{t(`iam.roles.${data.role}`)}}</template></Column>
       <Column :header="t('status')"><template #body="{data}">{{t(data.isActive?'iam.active':'iam.disabled')}}</template></Column>
+      <Column><template #body="{data}"><Button v-if="data.role!=='BUSINESS_OWNER'" :label="t('ops.permissions')" @click="edit(data)"/></template></Column>
       <Column><template #body="{data}"><Button :label="t(data.isActive?'iam.disable':'iam.enable')" :severity="data.isActive?'danger':'secondary'" :disabled="iam.busy||data.id===iam.currentUser?.id" @click="iam.setUserStatus(data.id,!data.isActive)"/></template></Column>
     </DataTable>
+    <form v-if="editing" class="warehouse-form" @submit.prevent="saveAccess"><h3>{{t('ops.permissions')}}</h3>
+      <label>{{t('iam.role')}} <select v-model="editing.role"><option v-for="r in roles" :key="r.value" :value="r.value">{{r.label}}</option></select></label>
+      <label><input type="checkbox" v-model="editing.inventory"> {{t('ops.editInventory')}}</label>
+      <label><input type="checkbox" v-model="editing.sales"> {{t('sales.title')}}</label><button :disabled="iam.busy">{{t('save')}}</button>
+    </form>
   </section>
 </template>

@@ -5,5 +5,5 @@ export const iamRoutes=[
 ];
 
 export function safeAuthRedirect(value){
-  return typeof value==='string'&&(value==='/sales'||/^\/sales\?item=\d+$/.test(value)||value==='/users'||value==='/inventory'||value.startsWith('/inventory/'))?value:'/inventory';
+  return typeof value==='string'&&(/^\/organization(?:\?plan=(?:starter|growth|enterprise))?$/.test(value)||value==='/sales'||/^\/sales\?item=\d+$/.test(value)||value==='/users'||value==='/inventory'||value.startsWith('/inventory/'))?value:'/inventory';
 }

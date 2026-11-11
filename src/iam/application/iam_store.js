@@ -64,5 +64,9 @@ export const useIamStore=defineStore('iam',()=>{
     busy.value=true;error.value=null;
     try{await api.setUserStatus(id,isActive);await loadUsers();}catch(e){rejected(e);}finally{busy.value=false;}
   }
-  return {currentUser,users,error,busy,loadingUsers,isAuthenticated,isOwner,restore,signIn,signUp,signOut,loadUsers,createUser,setUserStatus};
+  async function setAccess(id,resource){
+    busy.value=true;error.value=null;
+    try{await api.setAccess(id,resource);await loadUsers();return true;}catch(e){rejected(e);return false;}finally{busy.value=false;}
+  }
+  return {setAccess,currentUser,users,error,busy,loadingUsers,isAuthenticated,isOwner,restore,signIn,signUp,signOut,loadUsers,createUser,setUserStatus};
 });

@@ -1,16 +1,17 @@
 <script setup>
 import {useSalesStore} from '../../sales/application/sales.store.js';
+import {useOrganizationStore} from '../../organization/application/organization.store.js';
 import {watch} from 'vue';
 import {useRoute,useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {useWarehouseStore} from '../application/warehouse.store.js';
 import {useIamStore} from '../../iam/application/iam_store.js';
 const {t,locale}=useI18n(),store=useWarehouseStore(),iam=useIamStore(),route=useRoute(),router=useRouter();
-const sales=useSalesStore();
+const sales=useSalesStore(), organization=useOrganizationStore();
 function teKey(code){return ['AuthenticationRequired','Forbidden'].includes(code)?code:'RequestFailed';}
 watch(locale,value=>{document.documentElement.lang=value==='es_419'?'es-419':'en-US';},{immediate:true});
 watch(()=>iam.currentUser?.id,async id=>{
-  store.reset();sales.reset();
+  store.reset();sales.reset();organization.reset();
   if(id)await store.fetchSession();
   else if(route.meta.requiresAuth)await router.replace({name:'sign-in',query:{redirect:route.fullPath}});
 },{immediate:true});
@@ -20,7 +21,7 @@ function signOut(){iam.signOut();router.replace({name:'sign-in'});}
   <a href="#warehouse-main" class="skip-link">{{locale==='es_419'?'Saltar al contenido':'Skip to content'}}</a>
   <header class="warehouse-header">
     <router-link to="/inventory" class="warehouse-brand"><span aria-hidden="true">AI</span> ToDu</router-link>
-    <nav v-if="iam.isAuthenticated" :aria-label="t('inventory')"><router-link to="/inventory">{{t('inventory')}}</router-link><router-link v-if="['BUSINESS_OWNER','SALES_CLERK'].includes(iam.currentUser?.role)" to="/sales">{{t('sales.title')}}</router-link><router-link v-if="iam.isOwner" to="/users">{{t('iam.users')}}</router-link></nav>
+    <nav v-if="iam.isAuthenticated" :aria-label="t('inventory')"><router-link to="/inventory">{{t('inventory')}}</router-link><router-link v-if="iam.currentUser?.canSell" to="/sales">{{t('sales.title')}}</router-link><router-link v-if="iam.isOwner" to="/users">{{t('iam.users')}}</router-link><router-link to="/organization">{{t('ops.organization')}}</router-link></nav>
     <div class="warehouse-languages" role="group" aria-label="Language / Idioma">
       <button type="button" :aria-pressed="locale==='en_US'" @click="locale='en_US'">EN</button>
       <button type="button" :aria-pressed="locale==='es_419'" @click="locale='es_419'">ES</button>

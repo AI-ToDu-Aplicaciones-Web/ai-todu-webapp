@@ -1,6 +1,9 @@
 <script setup>
 import {useIamStore} from '../../../iam/application/iam_store.js';
-const iam=useIamStore();
+import {onMounted} from 'vue';
+import {useOrganizationStore} from '../../../organization/application/organization.store.js';
+const iam=useIamStore(),org=useOrganizationStore();
+onMounted(()=>org.loadReasons().catch(()=>{}));
 import {computed,reactive,ref,watch} from 'vue';
 import {useRoute} from 'vue-router';
 import {useI18n} from 'vue-i18n';
@@ -32,10 +35,11 @@ async function quarantine(){if(await store.mutate('changeQuarantine',{isQuaranti
 async function relocate(){if(await store.mutate('relocateLot',{location:state.location,reason:state.reason},lotId.value))state.reason='';}
 </script>
 <template>
+  <datalist id="adjustment-reasons"><option v-for="row in org.reasons" :key="row.id" :value="row.name"/></datalist>
   <router-link to="/inventory">← {{t('back')}}</router-link>
   <p v-if="store.loading" role="status">{{t('loading')}}</p>
   <template v-else-if="item">
-    <div class="warehouse-title"><div><p class="warehouse-eyebrow">{{item.sku}} · {{item.category}}</p><h1>{{item.name}}</h1><router-link v-if="item.canBeSold && ['BUSINESS_OWNER','SALES_CLERK'].includes(iam.currentUser?.role)" :to="{name:'sales',query:{item:item.id}}">{{t('sales.record')}}</router-link></div><Button :label="t('refresh')" severity="secondary" icon="pi pi-refresh" @click="store.fetchItem(item.id)"/></div>
+    <div class="warehouse-title"><div><p class="warehouse-eyebrow">{{item.sku}} · {{item.category}}</p><h1>{{item.name}}</h1><router-link v-if="item.canBeSold && iam.currentUser?.canSell" :to="{name:'sales',query:{item:item.id}}">{{t('sales.record')}}</router-link></div><Button :label="t('refresh')" severity="secondary" icon="pi pi-refresh" @click="store.fetchItem(item.id)"/></div>
     <section class="warehouse-metrics" :aria-label="t('stockOverview')"><div class="warehouse-card"><span>{{t('available')}}</span><strong data-testid="available-stock">{{item.availableQuantity}}</strong></div><div class="warehouse-card"><span>{{t('physical')}}</span><strong data-testid="physical-stock">{{item.totalQuantity}}</strong></div><div class="warehouse-card"><span>{{t('status')}}</span><strong class="warehouse-badge" :class="item.status.toLowerCase()">{{t(item.status)}}</strong></div></section>
     <section class="warehouse-card"><h2>{{t('lots')}}</h2><DataTable :value="item.lots" data-key="id" scrollable><template #empty>{{t('noLots')}}</template><Column field="code" :header="t('lotCode')"/><Column field="location" :header="t('location')"/><Column field="quantity" :header="t('quantity')"/><Column :header="t('expiresOn')"><template #body="{data}">{{date(data.expiresOn)}}</template></Column><Column :header="t('quarantined')"><template #body="{data}">{{t(data.isQuarantined?'yes':'no')}}</template></Column><Column :header="t('expired')"><template #body="{data}">{{t(data.isExpired?'yes':'no')}}</template></Column></DataTable></section>
     <p v-if="!store.canManage" role="status">{{t('readOnly')}}</p>
@@ -49,7 +53,7 @@ async function relocate(){if(await store.mutate('relocateLot',{location:state.lo
       <section class="warehouse-card"><h2>{{t('operations')}}</h2><label for="operation-lot">{{t('lot')}}</label><Select input-id="operation-lot" v-model="lotId" :options="lots" option-label="label" option-value="value" :placeholder="t('chooseLot')" class="warehouse-lot-select"/><p v-if="!selectedLot">{{t('selectOperation')}}</p>
         <div v-if="selectedLot" class="warehouse-operation-grid">
           <form class="warehouse-operation" @submit.prevent="movement"><h3>{{t('movement')}}</h3><label for="movement-type">{{t('movementType')}}</label><Select input-id="movement-type" v-model="move.type" :options="movementTypes" option-label="label" option-value="value"/>
-            <label>{{t('quantity')}}<InputNumber input-id="movement-quantity" v-model="move.quantity" :max-fraction-digits="3" required/></label><small>{{t('quantityHint')}}</small><label>{{t('reason')}}<InputText id="movement-reason" v-model="move.reason" required maxlength="500"/></label><Button type="submit" :label="t('save')" :loading="store.saving"/></form>
+            <label>{{t('quantity')}}<InputNumber input-id="movement-quantity" v-model="move.quantity" :max-fraction-digits="3" required/></label><small>{{t('quantityHint')}}</small><label>{{t('reason')}}<InputText id="movement-reason" list="adjustment-reasons" v-model="move.reason" required maxlength="500"/></label><Button type="submit" :label="t('save')" :loading="store.saving"/></form>
           <form class="warehouse-operation" @submit.prevent="physicalCount"><h3>{{t('count')}}</h3><p>{{t('expected')}}: {{count.expectedQuantity}}</p><label>{{t('counted')}}<InputNumber input-id="count-quantity" v-model="count.countedQuantity" :min="0" :max-fraction-digits="3" required/></label><label>{{t('reason')}}<InputText id="count-reason" v-model="count.reason" required maxlength="500"/></label><Button type="submit" :label="t('countAction')" :loading="store.saving"/></form>
           <form class="warehouse-operation" @submit.prevent="classify"><h3>{{t('return')}}</h3><label>{{t('quantity')}}<InputNumber input-id="return-quantity" v-model="returned.quantity" :min="0.001" :max-fraction-digits="3" required/></label><label for="return-disposition">{{t('disposition')}}</label><Select input-id="return-disposition" v-model="returned.disposition" :options="dispositions" option-label="label" option-value="value"/><label>{{t('reference')}}<InputText id="return-reference" v-model="returned.reference" required maxlength="120"/></label><label>{{t('reason')}}<InputText id="return-reason" v-model="returned.reason" required maxlength="500"/></label><Button type="submit" :label="t('returnAction')" :loading="store.saving"/></form>
           <div class="warehouse-operation"><form @submit.prevent="quarantine"><h3>{{t('quarantineAction')}}</h3><label>{{t('reason')}}<InputText id="quarantine-reason" v-model="state.reason" required maxlength="500"/></label><Button type="submit" :label="t(selectedLot.isQuarantined?'release':'isolate')" :loading="store.saving"/></form><form @submit.prevent="relocate"><h3>{{t('relocate')}}</h3><label>{{t('newLocation')}}<InputText id="new-location" v-model="state.location" required maxlength="120"/></label><label>{{t('reason')}}<InputText id="relocation-reason" v-model="state.reason" required maxlength="500"/></label><Button type="submit" :label="t('relocate')" :loading="store.saving"/></form></div>

@@ -156,5 +156,33 @@
       "InvalidAccountData": "Revisa los campos obligatorios y la longitud de la contraseña.",
       "RequestFailed": "No se pudo conectar. Revisa tu conexión y vuelve a intentar."
     }
+  },
+  "ops": {
+    "addCustomer": "Registrar cliente",
+    "cart": "Carrito",
+    "addItem": "Agregar producto",
+    "remove": "Quitar",
+    "payment": "Resultado del pago",
+    "accepted": "Pago registrado",
+    "rejected": "Pago rechazado",
+    "receipt": "Comprobante",
+    "pending": "Pago pendiente",
+    "collect": "Registrar pago",
+    "organization": "Organización",
+    "subscription": "Suscripción",
+    "seats": "Usuarios",
+    "notifications": "Notificaciones",
+    "noAlerts": "Sin alertas activas.",
+    "LowStock": "Stock bajo",
+    "Expiry": "Vencimiento de lote",
+    "markRead": "Marcar como leída",
+    "read": "Leída",
+    "audit": "Actividad reciente",
+    "permissions": "Permisos",
+    "editInventory": "Gestionar inventario",
+    "from": "Desde",
+    "to": "Hasta",
+    "reasons": "Motivos de ajuste",
+    "cancelled": "Cancelada"
   }
 }

@@ -338,6 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const details = document.createElement('p');
             details.textContent = spec.details;
             planModalBody.replaceChildren(details);
+            document.getElementById('plan-sign-up').href = './inventory.html#/sign-up?plan=' + encodeURIComponent(planKey);
             planModalCta.href = '#contact';
             planModalCta.dataset.plan = planKey;
             openDialog(planModal);

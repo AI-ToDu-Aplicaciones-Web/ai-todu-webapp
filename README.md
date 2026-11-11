@@ -4,7 +4,7 @@ Vue 3, JavaScript and PrimeVue frontend connected to the C# AI-ToDu Platform. Th
 
 ## Run locally
 
-Start PostgreSQL and the backend on port 5080 using the backend README. Then:
+Start MySQL 8 and the backend on port 5080 using the backend README. Then:
 
 ```powershell
 npm ci
@@ -33,4 +33,4 @@ npm run build
 
 Both `index.html` and `inventory.html` are built. In development, Vite proxies `/warehouse-api` to `http://127.0.0.1:5080/api/v1`. For a separate production API set `VITE_WAREHOUSE_API_URL=https://YOUR_API_HOST/api/v1` before building and configure that frontend origin in the API's CORS settings.
 
-IAM follows `src/iam/{domain/model,application,infrastructure,presentation}`. Inventory details and integration boundaries are documented in [Warehouse Sprint 2](docs/warehouse-sprint-2.md). Sales, subscription enforcement, password recovery and cloud deployment remain separate backlog work. The authenticated Sales screen uses the platform transactions endpoint. While it is unavailable, the form stays closed. Stock changes on a sale must be coordinated by the C# service.
+IAM follows `src/iam/{domain/model,application,infrastructure,presentation}`. Inventory details and integration boundaries are documented in [Warehouse Sprint 2](docs/warehouse-sprint-2.md). Sales supports a multi-product cart, payment outcomes, dated history, receipts and classified returns. Open Organization to view stock alerts; owners can select the subscription, manage adjustment reasons and review recent activity. Open Users to grant or revoke staff permissions.
