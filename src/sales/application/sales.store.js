@@ -1,43 +1,36 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { BaseApi } from '../../shared/infrastructure/base-api.js';
+import { computed, shallowRef } from 'vue';
+import { PlatformApi } from '../../shared/infrastructure/platform-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 import { CommercialTransaction } from '../domain/model/commercial-transaction.entity.js';
-import { useWarehouseStore } from '../../warehouse/application/warehouse.store.js';
-
-const api = new BaseApi();
-const endpoint = new BaseEndpoint(api, '/transactions');
 
 export const useSalesStore = defineStore('sales', () => {
-    const transactions = ref([]);
-    const totalSalesRevenue = computed(() => transactions.value.reduce((acc, t) => acc + t.total, 0));
+  const endpoint = new BaseEndpoint(new PlatformApi(), '/transactions');
+  const transactions = shallowRef([]);
+  const totalSalesRevenue = computed(() => transactions.value.reduce((sum, row) => sum + row.total, 0));
+  let generation = 0;
 
-    async function fetchTransactions() {
-        const res = await endpoint.getAll();
-        transactions.value = (res.data || []).map(r => new CommercialTransaction(r));
+  function reset() {
+    generation++;
+    transactions.value = [];
+  }
+
+  async function fetchTransactions() {
+    const current = generation;
+    const { data } = await endpoint.getAll();
+    if (!Array.isArray(data)) throw new Error('Invalid sales response');
+    if (generation === current) transactions.value = data.map(row => new CommercialTransaction(row));
+  }
+
+  async function createSale({ customerName, item, quantity }) {
+    if (!customerName.trim() || !Number.isFinite(quantity) || quantity <= 0 || quantity > item.availableQuantity) {
+      throw new Error('Invalid sale');
     }
+    const current = generation;
+    const { data } = await endpoint.create({ customerName: customerName.trim(), itemId: item.id, sku: item.sku, quantity });
+    if (!data?.id) throw new Error('Sale confirmation unavailable');
+    if (generation === current) transactions.value = [new CommercialTransaction(data), ...transactions.value];
+  }
 
-    // Domain Policy (US03 & US30): Confirming a sale validates Quarantine/StockOut and deducts Warehouse stock
-    async function createSale({ customerName, item, quantity }) {
-        if (!item.canBeSold) {
-            throw new Error(`Item ${item.sku} is in ${item.status} and cannot be sold (US03/US16).`);
-        }
-        if (quantity > item.quantity) {
-            throw new Error(`Requested quantity (${quantity}) exceeds available stock (${item.quantity}).`);
-        }
-        const warehouseStore = useWarehouseStore();
-        await warehouseStore.adjustStock(item, -Math.abs(quantity));
-
-        const trx = new CommercialTransaction({
-            customerName,
-            sku: item.sku,
-            itemName: item.name,
-            quantity,
-            unitPrice: item.unitPrice
-        });
-        const res = await endpoint.create(trx.toPrimitives());
-        transactions.value.unshift(new CommercialTransaction(res.data));
-    }
-
-    return { transactions, totalSalesRevenue, fetchTransactions, createSale };
+  return { transactions, totalSalesRevenue, fetchTransactions, createSale, reset };
 });
