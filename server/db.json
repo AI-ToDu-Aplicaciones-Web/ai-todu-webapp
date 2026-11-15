@@ -6,8 +6,7 @@
       "email": "carlos@restaurantesmendoza.pe",
       "password": "admin123",
       "role": "BUSINESS_OWNER",
-      "organization": "Mendoza Gastronomy S.A.C.",
-      "plan": "Growth Business"
+      "organization": "Mendoza Gastronomy S.A.C."
     },
     {
       "id": "usr-002",
@@ -15,8 +14,7 @@
       "email": "miguel@restaurantesmendoza.pe",
       "password": "operario123",
       "role": "WAREHOUSE_OPERATOR",
-      "organization": "Mendoza Gastronomy S.A.C.",
-      "plan": "Growth Business"
+      "organization": "Mendoza Gastronomy S.A.C."
     }
   ],
   "inventory-items": [
@@ -29,7 +27,7 @@
       "lotCode": "LOT-2026-09",
       "quantity": 85,
       "minStock": 20,
-      "unitPrice": 140.00,
+      "unitPrice": 140.0,
       "status": "AVAILABLE"
     },
     {
@@ -41,7 +39,7 @@
       "lotCode": "LOT-2026-10",
       "quantity": 6,
       "minStock": 15,
-      "unitPrice": 95.50,
+      "unitPrice": 95.5,
       "status": "LOW_STOCK"
     },
     {
@@ -53,7 +51,7 @@
       "lotCode": "LOT-2026-08",
       "quantity": 12,
       "minStock": 10,
-      "unitPrice": 68.00,
+      "unitPrice": 68.0,
       "status": "QUARANTINE"
     }
   ],
@@ -64,12 +62,12 @@
       "sku": "SKU-TEX-001",
       "itemName": "Cotton Fabric Roll Red 50m",
       "quantity": 5,
-      "unitPrice": 140.00,
-      "subtotal": 700.00,
-      "igv": 126.00,
-      "total": 826.00,
+      "unitPrice": 140.0,
+      "subtotal": 700.0,
+      "igv": 126.0,
+      "total": 826.0,
       "paymentStatus": "PAID",
-      "createdAt": "2026-10-25T15:30:00Z"
+      "createdAt": "2026-10-28T15:30:00Z"
     }
   ],
   "manifests": [
