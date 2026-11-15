@@ -1,26 +1,35 @@
 export class Money {
-    #amount;
-    #currency;
+    static IGV_RATE = 0.18;
 
-    constructor(amount = 0, currency = 'PEN') {
+    constructor({ amount = 0, currency = 'PEN' } = {}) {
         const parsed = Number(amount);
-        this.#amount = Number.isFinite(parsed) && parsed >= 0 ? Number(parsed.toFixed(2)) : 0;
-        this.#currency = currency;
-        Object.freeze(this);
+        if (Number.isNaN(parsed) || parsed < 0) {
+            throw new Error('Money amount must be a non-negative number.');
+        }
+        if (!['PEN', 'USD'].includes(currency)) {
+            throw new Error(`Unsupported currency: ${currency}`);
+        }
+        this._amount = Number(parsed.toFixed(2));
+        this._currency = currency;
     }
 
-    get amount() { return this.#amount; }
-    get currency() { return this.#currency; }
+    get amount() { return this._amount; }
+    get currency() { return this._currency; }
 
     multiply(factor) {
-        return new Money(this.#amount * Number(factor), this.#currency);
+        return new Money({ amount: this._amount * Number(factor), currency: this._currency });
     }
 
-    calculateIgv(rate = 0.18) {
-        return new Money(this.#amount * rate, this.#currency);
+    calculateIgv() {
+        return new Money({ amount: this._amount * Money.IGV_RATE, currency: this._currency });
+    }
+
+    withIgv() {
+        return new Money({ amount: this._amount * (1 + Money.IGV_RATE), currency: this._currency });
     }
 
     format() {
-        return `S/ ${this.#amount.toFixed(2)}`;
+        const symbol = this._currency === 'PEN' ? 'S/' : '$';
+        return `${symbol} ${this._amount.toFixed(2)}`;
     }
 }
